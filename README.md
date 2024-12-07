@@ -15,14 +15,6 @@ sudo apt install npm
 
 Este es un proyecto [Next.js](https://nextjs.org/) iniciado con [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Crear aplicacion
-
-Usar para crear aplicacion a ejecutar
-
-```
-npx create-next-app frontend
-```
-
 Luego instalar
 
 ```
