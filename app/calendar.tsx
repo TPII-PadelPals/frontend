@@ -89,8 +89,8 @@ export default function Calendar() {
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                <button onClick={goToPreviousWeek}>Semana Anterior</button>
-                <button onClick={goToNextWeek}>Semana Siguiente</button>
+                <button onClick={goToPreviousWeek}><div className="font-bold">Semana Anterior</div></button>
+                <button onClick={goToNextWeek}><div className="font-bold">Semana Siguiente</div></button>
             </div>
 
             <div style={{ marginBottom: "10px" }}>
