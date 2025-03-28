@@ -1,4 +1,4 @@
-# frontend
+# PadelPals - frontend
 
 template base:
 
@@ -40,25 +40,30 @@ Puede comenzar a editar la página modificando `app/page.tsx`. La página se act
 
 Este proyecto utiliza [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) para optimizar y cargar automáticamente Inter, una fuente personalizada de Google.
 
-### Para salir del entorno virtual
+## Para correr tests
+
+#### Corre todos los test:
+
+```
+npx playwright test
+```
+
+#### En modo interactivo (útil para entender que hacen los tests)
+```
+npx playwright test --ui
+```
+
+#### Para correr los test en un solo navegador
+Ejemplo: en Chrome
+  
+```
+npx playwright test --project=chromium
+```
+
+## Para salir del entorno virtual
 
 Dentro de la raiz del proyecto:
 
 ```
 nvm deactivate
 ```
-
-### Más información
-
-Para obtener más información sobre Next.js, consulte los siguientes recursos:
-
-- [Documentación de Next.js](https://nextjs.org/docs): obtenga más información sobre las características y la API de Next.js.
-- [Aprenda Next.js](https://nextjs.org/learn): un tutorial interactivo de Next.js.
-
-Puede consultar el [repositorio de GitHub de Next.js](https://github.com/vercel/next.js/): ¡sus comentarios y contribuciones son bienvenidos!
-
-### Implementar en Vercel
-
-La forma más sencilla de implementar su aplicación Next.js es usar la [Plataforma Vercel](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) de los creadores de Next.js.
-
-Consulte nuestra [documentación de implementación de Next.js](https://nextjs.org/docs/deployment) para obtener más detalles.
