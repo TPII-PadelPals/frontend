@@ -94,8 +94,8 @@ export default function Calendar() {
                 <Button onClick={goToNextWeek}><div className="font-bold">Semana Siguiente</div></Button>
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
-                <label>Filtrar por categoría:</label>
+            <div className="my-2.5">
+                <label className="font-bold">Filtrar por categoría:</label>
                 <select onChange={(e) => setFilter(e.target.value)} value={filter || ""}>
                     <option value="">Todas</option>
                     <option value="cancha_1">cancha 1</option>
