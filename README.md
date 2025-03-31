@@ -60,6 +60,20 @@ Ejemplo: en Chrome
 npx playwright test --project=chromium
 ```
 
+#### Fix: Al Correr test fallan
+En caso que haber instalado las dependencias del proyecto con `npm install` y no puedas correr los test, 
+sugiero que se instalen las dependencias de testing con:
+
+```
+sudo npx playwright install
+```
+
+ó bien:
+
+```
+npx playwright install-deps
+```
+
 ## Para salir del entorno virtual
 
 Dentro de la raiz del proyecto:
