@@ -16,6 +16,9 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en">
+      <head>
+        <link rel="stylesheet" href="./globals.css"/>
+      </head>
       <body>
       <div className="header">
           <h1><a href='https://code.daypilot.org/45330/next-js-weekly-calendar-open-source'>Next.js Weekly Calendar (Open-Source)</a></h1>

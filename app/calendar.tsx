@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
+import { Button } from "@/components/ui/button"
 
 export default function Calendar() {
 
@@ -89,12 +90,12 @@ export default function Calendar() {
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                <button onClick={goToPreviousWeek}>Semana Anterior</button>
-                <button onClick={goToNextWeek}>Semana Siguiente</button>
+                <Button onClick={goToPreviousWeek}><div className="font-bold">Semana Anterior</div></Button>
+                <Button onClick={goToNextWeek}><div className="font-bold">Semana Siguiente</div></Button>
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
-                <label>Filtrar por categoría:</label>
+            <div className="my-2.5">
+                <label className="font-bold">Filtrar por categoría:</label>
                 <select onChange={(e) => setFilter(e.target.value)} value={filter || ""}>
                     <option value="">Todas</option>
                     <option value="cancha_1">cancha 1</option>
