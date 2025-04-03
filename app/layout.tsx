@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,10 +21,18 @@ export default function RootLayout({
         <link rel="stylesheet" href="./globals.css"/>
       </head>
       <body>
-      <div className="header">
-          <h1><a href='https://code.daypilot.org/45330/next-js-weekly-calendar-open-source'>Next.js Weekly Calendar (Open-Source)</a></h1>
-          <div><a href="https://javascript.daypilot.org/">DayPilot for JavaScript</a> - HTML5 Calendar/Scheduling Components for JavaScript/Angular/React/Vue</div>
-      </div>
+      <nav className='w-full fixed top-0 left-0 flex justify-between items-center header'>
+        <div>
+          <Link href='/'>
+            <h1 className='text-4xl font-extrabold'>PadelPals</h1>
+          </Link>
+        </div>
+        <div className='flex gap-x-5'>
+          <Link href='/auth/log-in' className='text-xl'>Iniciar Sesión</Link>
+          <Link href='/auth/sign-up' className='text-xl'>Registrarse</Link>
+        </div>
+      </nav>
+
 
       <div className="main">
           {children}
