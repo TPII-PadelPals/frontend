@@ -55,7 +55,7 @@ export default function InputForm() {
                 <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                    <Input placeholder="email@example.com" {...field} />
+                    <Input type="email" placeholder="email@example.com" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -70,7 +70,7 @@ export default function InputForm() {
                 <FormItem>
                 <FormLabel>Contraseña</FormLabel>
                 <FormControl>
-                    <Input placeholder="contraseña" {...field} />
+                    <Input type="password" placeholder="contraseña" {...field} />
                 </FormControl>
 
                 <FormMessage />
