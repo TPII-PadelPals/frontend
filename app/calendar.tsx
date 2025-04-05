@@ -6,18 +6,6 @@ import { Button } from "@/components/ui/button"
 
 export default function Calendar() {
 
-    const colors = [
-        {name: "Green", id: "#6aa84f"},
-        {name: "Blue", id: "#3d85c6"},
-        {name: "Turquoise", id: "#00aba9"},
-        {name: "Light Blue", id: "#56c5ff"},
-        {name: "Yellow", id: "#f1c232"},
-        {name: "Orange", id: "#e69138"},
-        {name: "Red", id: "#cc4125"},
-        {name: "Light Red", id: "#ff0000"},
-        {name: "Purple", id: "#af8ee5"},
-    ];
-
     const [calendar, setCalendar] = useState<DayPilot.Calendar>();
     const [startDate, setStartDate] = useState<string>("2024-10-01");
     const [filter, setFilter] = useState<string | null>(null);
