@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,7 +22,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="./globals.css"/>
       </head>
       <body>
-      <nav className='w-full fixed top-0 left-0 flex justify-between items-center header'>
+      <nav className='w-full top-0 left-0 flex justify-between items-center header'>
         <div>
           <Link href='/'>
             <h1 className='text-4xl font-extrabold'>PadelPals</h1>
@@ -37,6 +38,8 @@ export default function RootLayout({
       <div className="main">
           {children}
       </div>
+
+      <Toaster/>
 
       </body>
       </html>
