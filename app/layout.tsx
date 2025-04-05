@@ -18,9 +18,6 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en">
-      <head>
-        <link rel="stylesheet" href="./globals.css"/>
-      </head>
       <body>
       <nav className='w-full top-0 left-0 flex justify-between items-center header'>
         <div>
