@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('completa el formulario de registro y ver el toast de éxito', async ({ page }) => {
+test('complete the registration form and see the success toast', async ({ page }) => {
 
   await page.goto('/auth/sign-up');
 
@@ -18,7 +18,7 @@ test('completa el formulario de registro y ver el toast de éxito', async ({ pag
   // await expect(page.getByText('Registro exitoso!')).toBeVisible();
 });
 
-test('completa el formulario de registro con email fallido y retorna error', async ({ page }) => {
+test('complete the registration form with failed email and it returns an error', async ({ page }) => {
 
     await page.goto('/auth/sign-up');
   
@@ -33,7 +33,7 @@ test('completa el formulario de registro con email fallido y retorna error', asy
 
   });
 
-  test('completa el formulario de registro con contraseña menor a 8 caracteres y retorna error', async ({ page }) => {
+  test('complete the registration form with a password less than 8 characters and it returns an error.', async ({ page }) => {
 
     await page.goto('/auth/sign-up');
   
