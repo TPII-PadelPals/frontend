@@ -25,7 +25,14 @@ export const formSchema = z.object({
   
 export type BusinessFormValues = z.infer<typeof formSchema>;
 
-export function BusinessAddForm({onSubmit} : { onSubmit: (data: { name: string; location: string }) => void}) {
+export function BusinessAddForm(
+  {
+    onSubmit,
+    onClose,
+  }: {
+    onSubmit: (data: { name: string; location: string }) => void;
+    onClose: () => void;
+  }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,7 +44,7 @@ export function BusinessAddForm({onSubmit} : { onSubmit: (data: { name: string; 
   return (
     <div className="flex flex-col items-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="min-w-80 w-1/3 space-y-5">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="min-w-80 w-1/3 space-y-6">
           <FormField
             control={form.control}
             name="name"
@@ -64,8 +71,10 @@ export function BusinessAddForm({onSubmit} : { onSubmit: (data: { name: string; 
               </FormItem>
             )}
           />
-
-          <Button type="submit" className="w-full">Crear Establecimiento</Button>
+          <div className="flex gap-2">
+            <Button type="button" variant="destructive" className="basis-2/5" onClick={onClose}>Cancelar</Button>
+            <Button type="submit" className="basis-3/5">Crear Establecimiento</Button>
+          </div>
         </form>
       </Form>
     </div>

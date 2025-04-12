@@ -13,33 +13,19 @@ import {
 
 import { toast } from "@/hooks/use-toast";
 import { BusinessAddForm, BusinessFormValues } from "@/components/BusinessAddForm";
+import { useState } from "react";
 
 
 export default function MyBusinessesPage() {
-
-
+  const [open, setOpen] = useState(false);
 
   async function onSubmit(values: BusinessFormValues) {
     console.log(values)
-    // const APP_PORT: string  = '8002'
-    // const APP_URL: string = `http://localhost`
-    // const response = await fetch(`${APP_URL}:${APP_PORT}/api/v1/businesses`, {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ values }),
-    // });
-
-    // if (response.ok) {
-    //     toast({ description: "Establecimiento Creado" });
-    // } else {
-    //     toast({ variant: "destructive", description: "Ocurrió un error. Intente de nuevo más tarde." });
-    // }
     toast({
       variant: "success",
       description:"Establecimiento Creado."
     })
+    setOpen(false);
 }
 
   return (
@@ -47,7 +33,7 @@ export default function MyBusinessesPage() {
       <div className="flex flex-col gap-y-3.5">
         <div className="flex justify-between items-center ">
           <h1 className="text-2xl font-bold">Mis Establecimientos</h1>
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
             <Button className="font-bold">+ Crear Establecimiento</Button>
             </DialogTrigger>
@@ -55,7 +41,8 @@ export default function MyBusinessesPage() {
               <DialogHeader>
                 <DialogTitle>Crear Establecimiento</DialogTitle>
               </DialogHeader>
-              <BusinessAddForm onSubmit={onSubmit}/>
+              <BusinessAddForm onSubmit={onSubmit} onClose={() => setOpen(false)}/>
+              
             </DialogContent>
           </Dialog>
         </div>
