@@ -5,4 +5,6 @@ test('should navigate to my-businesses page', async ({ page }) => {
   await page.goto('/my-businesses')
   
   await expect(page.getByRole('heading', { name: 'Mis Establecimientos' })).toBeVisible()
+
+  await expect(page.getByRole('button', { name: '+ Crear Establecimiento' })).toBeVisible();
 })
