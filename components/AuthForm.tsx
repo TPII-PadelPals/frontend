@@ -15,18 +15,18 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
+const formSchema = z.object({
+  email: z.string().email({ message: "Email inválido." }),
+  password: z.string().min(8, { message: "La contraseña debe tener al menos 8 caracteres." }),
+  name: z.string().min(3, { message: "El nombre de usuario debe tener al menos 3 caracteres." }).optional(),
+})
+
 type AuthFormProps = {
   type: 'login' | 'signup'
-  onSubmit: (data: any) => void
+  onSubmit: (data: z.infer<typeof formSchema>) => void
 }
 
 export function AuthForm({ type, onSubmit }: AuthFormProps) {
-  const formSchema = z.object({
-    email: z.string().email({ message: "Email inválido." }),
-    password: z.string().min(8, { message: "La contraseña debe tener al menos 8 caracteres." }),
-    name: z.string().min(3, { message: "El nombre de usuario debe tener al menos 3 caracteres." }).optional(),
-  })
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
