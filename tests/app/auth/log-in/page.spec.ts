@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('complete the registration form and it will redirect you to the owner homepage.', async ({ page }) => {
+test('complete the registration form and it will redirect you to my-businesses page.', async ({ page }) => {
 
   await page.goto('/auth/log-in');
 
