@@ -40,6 +40,12 @@ Puede comenzar a editar la página modificando `app/page.tsx`. La página se act
 
 Este proyecto utiliza [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) para optimizar y cargar automáticamente Inter, una fuente personalizada de Google.
 
+## Para correr linter
+
+```bash
+npm run lint
+```
+
 ## Para correr tests
 
 #### Corre todos los test:
