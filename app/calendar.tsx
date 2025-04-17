@@ -2,20 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
+import { Button } from "@/components/ui/button"
 
 export default function Calendar() {
-
-    const colors = [
-        {name: "Green", id: "#6aa84f"},
-        {name: "Blue", id: "#3d85c6"},
-        {name: "Turquoise", id: "#00aba9"},
-        {name: "Light Blue", id: "#56c5ff"},
-        {name: "Yellow", id: "#f1c232"},
-        {name: "Orange", id: "#e69138"},
-        {name: "Red", id: "#cc4125"},
-        {name: "Light Red", id: "#ff0000"},
-        {name: "Purple", id: "#af8ee5"},
-    ];
 
     const [calendar, setCalendar] = useState<DayPilot.Calendar>();
     const [startDate, setStartDate] = useState<string>("2024-10-01");
@@ -89,12 +78,12 @@ export default function Calendar() {
     return (
         <div>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                <button onClick={goToPreviousWeek}>Semana Anterior</button>
-                <button onClick={goToNextWeek}>Semana Siguiente</button>
+                <Button onClick={goToPreviousWeek}><div className="font-bold">Semana Anterior</div></Button>
+                <Button onClick={goToNextWeek}><div className="font-bold">Semana Siguiente</div></Button>
             </div>
 
-            <div style={{ marginBottom: "10px" }}>
-                <label>Filtrar por categoría:</label>
+            <div className="my-2.5">
+                <label className="font-bold">Filtrar por categoría:</label>
                 <select onChange={(e) => setFilter(e.target.value)} value={filter || ""}>
                     <option value="">Todas</option>
                     <option value="cancha_1">cancha 1</option>
