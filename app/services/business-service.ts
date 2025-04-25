@@ -7,40 +7,21 @@ export type Business = {
     location: string
 }
 
-export async function getData(): Promise<Business[]> {
-    // TODO: Hacer el fetch de datos con owner_id mockeado.
-    return [
-      {
-        business_public_id: "728ed52f",
-        owner_id:"44124ff8-34a8-4e7a-9ea9-fb069b092a98",
-        latitude: 123.33,
-        longitude: 123.44,
-        name: "PadelYa",
-        location: "Paseo Colon 850, CABA",
-      },
-      {
-        business_public_id: "728ed52f",
-        owner_id: "44124ff8-34a8-4e7a-9ea9-fb069b092a98",
-        latitude: 123.33,
-        longitude: 123.44,
-        name: "Chumastaiger",
-        location: "Mario bravo 323, CABA",
-      },
-      {
-        business_public_id: "728ed52f",
-        owner_id:"44124ff8-34a8-4e7a-9ea9-fb069b092a98",
-        name: "100",
-        location: "pending",
-        latitude: 123.33,
-        longitude: 123.44,
-      },
-      {
-        business_public_id: "728ed52f",
-        owner_id: "44124ff8-34a8-4e7a-9ea9-fb069b092a98",
-        name: "100",
-        location: "pending",
-        latitude: 123.33,
-        longitude: 123.44,
-      },
-    ]
+export async function getData(owner_id: string): Promise<Business[]> {
+  const response = await fetch(`http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}/api/v1/businesses/?owner_id=${owner_id}`, {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "x-api-key": `${process.env.BUSINESS_SERVICE_API_KEY}`,
+    },
+  })
+
+  if (response.ok) {
+    const data_json = await response.json()
+    return data_json.data
+
+  } else {
+    console.log(response)
+    return []
   }
+}
