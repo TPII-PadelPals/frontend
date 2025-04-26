@@ -27,6 +27,21 @@ const table_columns: ColumnDef<Business>[] = [
         accessorKey: "location",
         header: "Dirección",
     },
+    {
+      header: "Acciones",
+      cell: ({row}) => {
+        // se va a usar para poder ver, editar o eliminar business
+        const _business = row.original // @ts-ignore
+
+        return (
+          <div className="flex gap-x-3.5">
+            <Button>Ver</Button>
+            <Button variant="outline">Editar</Button>
+            <Button variant="destructive">Eliminar</Button>
+          </div>
+        )
+      }
+    }
 ]
 
 export default function MyBusinesses({ data }: { data: Business[] } ){
