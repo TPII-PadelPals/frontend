@@ -14,6 +14,7 @@ export async function getData(owner_id: string): Promise<Business[]> {
         "Content-Type": "application/json",
         "x-api-key": `${process.env.BUSINESS_SERVICE_API_KEY}`,
     },
+    cache: "no-store",
   })
 
   if (response.ok) {
