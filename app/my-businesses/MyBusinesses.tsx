@@ -31,7 +31,8 @@ const table_columns: ColumnDef<Business>[] = [
       header: "Acciones",
       cell: ({row}) => {
         // se va a usar para poder ver, editar o eliminar business
-        const _business = row.original // @ts-ignore
+        /* eslint-disable-next-line */
+        const _business = row.original
 
         return (
           <div className="flex gap-x-3.5">
