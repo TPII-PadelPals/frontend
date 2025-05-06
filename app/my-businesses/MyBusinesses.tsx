@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Business } from "@/app/services/business-service";
 import { DataTable } from "@/components/ui/data-table"
 import { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 
 const table_columns: ColumnDef<Business>[] = [
     {
@@ -32,11 +33,11 @@ const table_columns: ColumnDef<Business>[] = [
       cell: ({row}) => {
         // se va a usar para poder ver, editar o eliminar business
         /* eslint-disable-next-line */
-        const _business = row.original
+        const business = row.original
 
         return (
           <div className="flex gap-x-3.5">
-            <Button>Ver</Button>
+            <Link href={`/my-businesses/${business.business_public_id}`}><Button>Ver</Button></Link>
             <Button variant="outline">Editar</Button>
             <Button variant="destructive">Eliminar</Button>
           </div>
