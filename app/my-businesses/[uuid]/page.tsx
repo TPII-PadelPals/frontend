@@ -1,6 +1,5 @@
 "use client"
 
-// import { getData } from "@/app/services/business-service";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -17,9 +16,6 @@ import { PadelCourtAddForm, PadelCourtFormValues } from "@/components/PadelCourt
 
 
 export default function MyCourtsPage() {
-  // OWNER_ID debería ser una variable que obtengo de la sesión del usuario una vez logueado.
-  const OWNER_ID = "99222f8d-2cdc-405e-9905-88fcbd0afea2"
-//   const business_data = await getData(OWNER_ID)
   const [open, setOpen] = useState(false);
 
   const [businessData, setbusinessData] = useState<{ name: string; location: string } | null>(null)
@@ -37,7 +33,7 @@ export default function MyCourtsPage() {
     console.log(values)
     toast({
       variant: "success",
-      description:"Establecimiento Creado."
+      description:"Cancha creada correctamente."
     })
     setOpen(false);
   }

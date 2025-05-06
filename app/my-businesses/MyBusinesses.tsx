@@ -47,7 +47,7 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
                   router.push(`/my-businesses/${business.business_public_id}`)
                   }
                 }>
-                Ver
+                Gestionar Canchas
               </Button>
               <Button variant="outline">Editar</Button>
               <Button variant="destructive">Eliminar</Button>
@@ -63,7 +63,7 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
     console.log(values)
     toast({
       variant: "success",
-      description:"Establecimiento Creado."
+      description:"Establecimiento creado correctamente."
     })
     setOpen(false);
   }
