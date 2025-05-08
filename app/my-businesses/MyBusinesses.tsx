@@ -17,42 +17,53 @@ import { useState } from "react";
 import { Business } from "@/app/services/business-service";
 import { DataTable } from "@/components/ui/data-table"
 import { ColumnDef } from "@tanstack/react-table";
-
-const table_columns: ColumnDef<Business>[] = [
-    {
-        accessorKey: "name",
-        header: "Nombre",
-    },
-    {
-        accessorKey: "location",
-        header: "Dirección",
-    },
-    {
-      header: "Acciones",
-      cell: ({row}) => {
-        // se va a usar para poder ver, editar o eliminar business
-        /* eslint-disable-next-line */
-        const _business = row.original
-
-        return (
-          <div className="flex gap-x-3.5">
-            <Button>Ver</Button>
-            <Button variant="outline">Editar</Button>
-            <Button variant="destructive">Eliminar</Button>
-          </div>
-        )
-      }
-    }
-]
+import { useRouter } from 'next/navigation'
 
 export default function MyBusinesses({ data }: { data: Business[] } ){
+  const router = useRouter()
+
+  const table_columns: ColumnDef<Business>[] = [
+      {
+          accessorKey: "name",
+          header: "Nombre",
+      },
+      {
+          accessorKey: "location",
+          header: "Dirección",
+      },
+      {
+        header: "Acciones",
+        cell: ({row}) => {
+          const business = row.original
+  
+          return (
+            <div className="flex gap-x-3.5">
+              <Button onClick={
+                () => {
+                  localStorage.setItem("business_temp", JSON.stringify({
+                    name: business.name,
+                    location: business.location
+                    }))
+                  router.push(`/my-businesses/${business.business_public_id}`)
+                  }
+                }>
+                Gestionar Canchas
+              </Button>
+              <Button variant="outline">Editar</Button>
+              <Button variant="destructive">Eliminar</Button>
+            </div>
+          )
+        }
+      }
+  ]
+
   const [open, setOpen] = useState(false);
 
   async function onSubmit(values: BusinessFormValues) {
     console.log(values)
     toast({
       variant: "success",
-      description:"Establecimiento Creado."
+      description:"Establecimiento creado correctamente."
     })
     setOpen(false);
   }
