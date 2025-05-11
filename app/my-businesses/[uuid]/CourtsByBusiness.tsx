@@ -13,9 +13,45 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "@/hooks/use-toast";
 import { PadelCourtAddForm, PadelCourtFormValues } from "@/components/PadelCourtAddForm";
+import { Court } from "@/app/services/business-service";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 
 
-export default function CourtsByBusiness() {
+export default function CourtsByBusiness({ courts }: { courts: Court[] }) {
+  const table_columns: ColumnDef<Court>[] = [
+      {
+          accessorKey: "name",
+          header: "Nombre",
+      },
+      {
+          accessorKey: "price_per_hour",
+          header: "Precio alquiler por hora",
+          cell: ({ getValue }) => {
+            const value = getValue<number>();
+            return value != null ? `$ ${value.toLocaleString("es-AR", { currency: "ARS", minimumFractionDigits: 2 })}` : "-";
+          },
+      },
+      {
+          header: "Acciones",
+          cell: ({row}) => {
+          
+          /* eslint-disable */
+          /* Se va a usar cuando se hagan acciones en las canchas */
+          const _court = row.original
+          /* eslint-enable */
+
+          return (
+              <div className="flex gap-x-3.5">
+                <Button>Gestionar Matches</Button>
+                <Button variant="outline">Editar</Button>
+                <Button variant="destructive">Eliminar</Button>
+              </div>
+          )
+          }
+      }
+  ]  
+
   const [open, setOpen] = useState(false);
 
   const [businessData, setbusinessData] = useState<{ name: string; location: string } | null>(null)
@@ -55,11 +91,13 @@ export default function CourtsByBusiness() {
                 <DialogTitle>Crear Cancha</DialogTitle>
               </DialogHeader>
               <PadelCourtAddForm onSubmit={onSubmit} onClose={() => setOpen(false)}/>
-              
             </DialogContent>
           </Dialog>
         </div>
         <Separator></Separator>
+        <div className="container mx-auto py-10">
+          <DataTable columns={table_columns} data={courts} />
+        </div>
       </div>
     </div>
   )
