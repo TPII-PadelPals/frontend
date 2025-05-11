@@ -9,5 +9,5 @@ export default async function CourtsByBusinessPage({ params }: { params: { uuid:
   }
   /* eslint-enable */
 
-  return (<CourtsByBusiness courts={courts}/>)
+  return (<CourtsByBusiness courts={courts} businessPublicId={params.uuid}/>)
 }

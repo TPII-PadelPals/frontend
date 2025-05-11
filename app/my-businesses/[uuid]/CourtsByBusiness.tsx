@@ -18,7 +18,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 
 
-export default function CourtsByBusiness({ courts }: { courts: Court[] }) {
+export default function CourtsByBusiness({ courts, businessPublicId } : { courts: Court[] , businessPublicId : string}) {
   const table_columns: ColumnDef<Court>[] = [
       {
           accessorKey: "name",
@@ -65,8 +65,9 @@ export default function CourtsByBusiness({ courts }: { courts: Court[] }) {
 
   if (!businessData) return <p>Cargando...</p>
 
-  async function onSubmit(values: PadelCourtFormValues) {
+  async function onSubmit(values: PadelCourtFormValues, businessPublicId: string) {
     console.log(values)
+    console.log(businessPublicId)
     toast({
       variant: "success",
       description:"Cancha creada correctamente."
@@ -90,7 +91,7 @@ export default function CourtsByBusiness({ courts }: { courts: Court[] }) {
               <DialogHeader>
                 <DialogTitle>Crear Cancha</DialogTitle>
               </DialogHeader>
-              <PadelCourtAddForm onSubmit={onSubmit} onClose={() => setOpen(false)}/>
+              <PadelCourtAddForm onSubmit={onSubmit} onClose={() => setOpen(false)} businessPublicId={businessPublicId}/>
             </DialogContent>
           </Dialog>
         </div>
