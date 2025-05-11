@@ -23,7 +23,6 @@ export default function AuthLayout({
   const pathIsPublic = publicPaths.includes(pathname);
 
   useEffect(() => {
-    console.log("AuthLayout useEffect");
     if (authenticated === null) {
       return;
     }
