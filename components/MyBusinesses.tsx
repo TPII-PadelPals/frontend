@@ -88,7 +88,7 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
               <DialogHeader>
                 <DialogTitle>Crear Establecimiento</DialogTitle>
               </DialogHeader>
-              <BusinessAddForm onSubmit={onSubmit} onClose={() => setOpen(false)} ownerId={process.env.NEXT_PUBLIC_OWNER_ID}/>
+              <BusinessAddForm onSubmit={onSubmit} onClose={() => setOpen(false)} ownerId={process.env.OWNER_ID}/>
               
             </DialogContent>
           </Dialog>
