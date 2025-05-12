@@ -59,11 +59,18 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
   const [open, setOpen] = useState(false);
 
   async function onSubmit(values: BusinessFormValues, ownerId: string | undefined) {
-    await createBusiness(values.name, values.location, ownerId)
-    toast({
-      variant: "success",
-      description:"Establecimiento creado correctamente."
-    })
+    const business = await createBusiness(values.name, values.location, ownerId)
+    if (business) {
+      toast({
+        variant: "success",
+        description: "Establecimiento creado correctamente."
+      })
+    } else {
+      toast({
+        variant: "destructive",
+        description: "Algo salió mal, intenta nuevamente más tarde."
+      })
+    }
     setOpen(false)
     router.refresh();
   }

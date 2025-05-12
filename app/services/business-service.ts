@@ -53,11 +53,7 @@ export async function createBusiness(name: string, location: string, ownerId: st
   })
 
   if (response.ok) {
-    const data_json = await response.json()
-    return data_json.data
-
-  } else {
-    console.log(response)
-    return null
+    return await response.json()
   }
+  return null
 }
