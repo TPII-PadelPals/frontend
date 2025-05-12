@@ -39,8 +39,7 @@ export async function getData(ownerId: string | undefined): Promise<Business[]> 
 }
 
 export async function getCourts(owner_id: string, business_public_id: string): Promise<Court[]> {
-  const url = `http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}/api/v1/padel-courts/` +
-              `?user_id=${owner_id}&business_public_id=${business_public_id}`
+  const url = `${BUSINESS_BASE_URL}/api/v1/padel-courts/?user_id=${owner_id}&business_public_id=${business_public_id}`
 
   const response = await fetch(url, {
     method: "GET",
