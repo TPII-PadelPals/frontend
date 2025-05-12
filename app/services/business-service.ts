@@ -7,7 +7,7 @@ export type Business = {
     location: string
 }
 
-const BUSINESS_BASE_URL = `http://${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_URL}:${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_PORT}`
+const BUSINESS_BASE_URL = `http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}`
 
 
 export async function getData(ownerId: string | undefined): Promise<Business[]> {
@@ -19,7 +19,7 @@ export async function getData(ownerId: string | undefined): Promise<Business[]> 
     method: "GET",
     headers: {
         "Content-Type": "application/json",
-        "x-api-key": `${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_API_KEY}`,
+        "x-api-key": `${process.env.BUSINESS_SERVICE_API_KEY}`,
     },
     cache: "no-store",
   })
@@ -38,7 +38,7 @@ export async function createBusiness(name: string, location: string, ownerId: st
   if (!ownerId) {
     throw new Error("Owner public ID missing");
   }
-  const url = `${BUSINESS_BASE_URL}/api/v1/businesses/?owner_id=${ownerId}`
+  const url = `/api/business-service/businesses?owner_id=${ownerId}`
   const payload = {
     name: name,
     location: location,
@@ -46,8 +46,7 @@ export async function createBusiness(name: string, location: string, ownerId: st
   const response = await fetch(url, {
     method: "POST",
     headers: {
-        "Content-Type": "application/json",
-        "x-api-key": `${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_API_KEY}`,
+        "Content-Type": "application/json"
     },
     cache: "no-store",
     body: JSON.stringify(payload)
