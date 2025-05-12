@@ -11,7 +11,6 @@ const BUSINESS_BASE_URL = `http://${process.env.BUSINESS_SERVICE_URL}:${process.
 
 
 export async function getData(ownerId: string | undefined): Promise<Business[]> {
-  console.log("getData")
   if (!ownerId) {
     throw new Error("Owner public ID missing");
   }
@@ -25,7 +24,6 @@ export async function getData(ownerId: string | undefined): Promise<Business[]> 
   })
   if (response.ok) {
     const data_json = await response.json()
-    console.log(data_json)
     return data_json.data
   
   } else {
