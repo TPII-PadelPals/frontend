@@ -64,7 +64,8 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
       variant: "success",
       description:"Establecimiento creado correctamente."
     })
-    setOpen(false);
+    setOpen(false)
+    router.refresh();
   }
 
   return (
