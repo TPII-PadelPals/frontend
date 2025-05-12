@@ -1,5 +1,5 @@
 import { Business, getData } from "@/app/services/business-service";
-import MyBusinesses from "./MyBusinesses";
+import MyBusinesses from "@/components/MyBusinesses";
 
 export default async function MyBusinessesPage() {
   // NEXT_PUBLIC_OWNER_ID debería ser una variable que obtengo de la sesión del usuario una vez logueado.
