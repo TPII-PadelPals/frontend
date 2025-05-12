@@ -16,6 +16,7 @@ import { PadelCourtAddForm, PadelCourtFormValues } from "@/components/PadelCourt
 import { Court } from "@/app/services/business-service";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
+import { useRouter } from "next/navigation";
 
 
 export default function CourtsByBusiness({ courts, businessPublicId } : { courts: Court[] , businessPublicId : string}) {
@@ -55,6 +56,8 @@ export default function CourtsByBusiness({ courts, businessPublicId } : { courts
   const [open, setOpen] = useState(false);
 
   const [businessData, setbusinessData] = useState<{ name: string; location: string } | null>(null)
+  
+  const router = useRouter()
 
   useEffect(() => {
     const raw = localStorage.getItem("business_temp")
@@ -66,13 +69,30 @@ export default function CourtsByBusiness({ courts, businessPublicId } : { courts
   if (!businessData) return <p>Cargando...</p>
 
   async function onSubmit(values: PadelCourtFormValues, businessPublicId: string) {
-    console.log(values)
-    console.log(businessPublicId)
-    toast({
-      variant: "success",
-      description:"Cancha creada correctamente."
+    const response = await fetch("/api/business-service/padel-courts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+      body: JSON.stringify({ formValues: values, businessPublicId }),
     })
-    setOpen(false);
+
+    if (response.ok){
+      toast({
+        variant: "success",
+        description:"Cancha creada correctamente."
+      })
+      setOpen(false);
+    }
+    else{
+      toast({
+        variant: "destructive",
+        description:"Algo salió mal, intenta nuevamente más tarde."
+      })
+      setOpen(false);
+    }
+    router.refresh();
   }
 
   return (

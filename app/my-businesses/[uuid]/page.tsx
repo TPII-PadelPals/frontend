@@ -1,5 +1,5 @@
 import { Court, getCourts } from "@/app/services/business-service";
-import CourtsByBusiness from "./CourtsByBusiness";
+import CourtsByBusiness from "@/components/CourtsByBusiness";
 
 export default async function CourtsByBusinessPage({ params }: { params: { uuid: string } }) {
   /* eslint-disable */
