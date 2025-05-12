@@ -7,14 +7,50 @@ export type Business = {
     location: string
 }
 
-export async function getData(owner_id: string): Promise<Business[]> {
-  const response = await fetch(`http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}/api/v1/businesses/?owner_id=${owner_id}`, {
+const BUSINESS_BASE_URL = `http://${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_URL}:${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_PORT}`
+
+
+export async function getData(ownerId: string | undefined): Promise<Business[]> {
+  console.log("getData")
+  if (!ownerId) {
+    throw new Error("Owner public ID missing");
+  }
+  const response = await fetch(`${BUSINESS_BASE_URL}/api/v1/businesses/?owner_id=${ownerId}`, {
     method: "GET",
     headers: {
         "Content-Type": "application/json",
-        "x-api-key": `${process.env.BUSINESS_SERVICE_API_KEY}`,
+        "x-api-key": `${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_API_KEY}`,
     },
     cache: "no-store",
+  })
+  if (response.ok) {
+    const data_json = await response.json()
+    console.log(data_json)
+    return data_json.data
+  
+  } else {
+    console.log(response)
+    return []
+  }
+}
+
+export async function createBusiness(name: string, location: string, ownerId: string | undefined): Promise<Business | null> {
+  if (!ownerId) {
+    throw new Error("Owner public ID missing");
+  }
+  const url = `${BUSINESS_BASE_URL}/api/v1/businesses/?owner_id=${ownerId}`
+  const payload = {
+    name: name,
+    location: location,
+  }
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "x-api-key": `${process.env.NEXT_PUBLIC_BUSINESS_SERVICE_API_KEY}`,
+    },
+    cache: "no-store",
+    body: JSON.stringify(payload)
   })
 
   if (response.ok) {
@@ -23,6 +59,6 @@ export async function getData(owner_id: string): Promise<Business[]> {
 
   } else {
     console.log(response)
-    return []
+    return null
   }
 }
