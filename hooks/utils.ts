@@ -32,5 +32,5 @@ export const onError = (error: AxiosError<ApiResponseError>) => {
     message = data.detail;
   }
 
-  alert(message);
+  return message;
 };

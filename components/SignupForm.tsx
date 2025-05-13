@@ -13,20 +13,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LoginFormSchema } from "@/schemas/auth";
-import { LoginInputs, LoginMutationInputs } from "@/types/auth";
+import { SignupFormSchema } from "@/schemas/auth";
+import { SignupInputs, SignupMutationInputs } from "@/types/auth";
 import { useCallback } from "react";
 
-export const LogInForm = ({
+export const SignupForm = ({
   onSubmit,
 }: {
-  onSubmit: (data: LoginMutationInputs) => void;
+  onSubmit: (data: SignupMutationInputs) => void;
 }) => {
-  const form = useForm<LoginInputs>({
-    resolver: zodResolver(LoginFormSchema),
+  const form = useForm<SignupInputs>({
+    resolver: zodResolver(SignupFormSchema),
     defaultValues: {
       email: "",
       password: "",
+      name: "",
+      phone: "",
     },
   });
 
@@ -35,7 +37,7 @@ export const LogInForm = ({
   const handleOnSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      await handleSubmit((data: LoginInputs) => onSubmit({ data }))();
+      await handleSubmit((data: SignupInputs) => onSubmit({ data }))();
     },
     [handleSubmit, onSubmit]
   );
@@ -44,6 +46,34 @@ export const LogInForm = ({
     <div className="flex flex-col items-center">
       <Form {...form}>
         <form onSubmit={handleOnSubmit} className="min-w-80 w-1/3 space-y-5">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nombre</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="nombre" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Telefono</FormLabel>
+                <FormControl>
+                  <Input type="text" placeholder="telefono" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <FormField
             control={control}
             name="email"
@@ -77,7 +107,7 @@ export const LogInForm = ({
           />
 
           <Button type="submit" className="w-full">
-            Iniciar sesión
+            Registrarse
           </Button>
         </form>
       </Form>
