@@ -1,5 +1,4 @@
 "use client"
-
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -14,7 +13,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import { BusinessAddForm, BusinessFormValues } from "@/components/BusinessAddForm";
 import { useState } from "react";
-import { Business } from "@/app/services/business-service";
+import { Business, createBusiness } from "@/app/services/business-service";
 import { DataTable } from "@/components/ui/data-table"
 import { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from 'next/navigation'
@@ -59,13 +58,21 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
 
   const [open, setOpen] = useState(false);
 
-  async function onSubmit(values: BusinessFormValues) {
-    console.log(values)
-    toast({
-      variant: "success",
-      description:"Establecimiento creado correctamente."
-    })
-    setOpen(false);
+  async function onSubmit(values: BusinessFormValues, ownerId: string | undefined) {
+    const business = await createBusiness(values.name, values.location, ownerId)
+    if (business) {
+      toast({
+        variant: "success",
+        description: "Establecimiento creado correctamente."
+      })
+    } else {
+      toast({
+        variant: "destructive",
+        description: "Algo salió mal, intenta nuevamente más tarde."
+      })
+    }
+    setOpen(false)
+    router.refresh();
   }
 
   return (
@@ -81,7 +88,7 @@ export default function MyBusinesses({ data }: { data: Business[] } ){
               <DialogHeader>
                 <DialogTitle>Crear Establecimiento</DialogTitle>
               </DialogHeader>
-              <BusinessAddForm onSubmit={onSubmit} onClose={() => setOpen(false)}/>
+              <BusinessAddForm onSubmit={onSubmit} onClose={() => setOpen(false)} ownerId={process.env.NEXT_PUBLIC_OWNER_ID}/>
               
             </DialogContent>
           </Dialog>
