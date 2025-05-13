@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 import { LoginAxiosConfig, LoginMutationConfig } from "@/config/auth";
@@ -13,11 +12,12 @@ import {
   LoginResponse,
   LoginResponseBody,
 } from "@/types/auth";
+import { useToast } from "../use-toast";
 
 export default function useLogin() {
   const axios: AxiosInstance = useAxios({ needAuth: false });
-  const router = useRouter();
   const { setLoginData } = useSessionStore();
+  const { toast } = useToast();
 
   const onSuccess = useCallback(
     (data: AxiosResponse<LoginResponse>) => {
@@ -27,6 +27,18 @@ export default function useLogin() {
       });
     },
     [setLoginData]
+  );
+
+  const onHookError = useCallback(
+    (error: AxiosError<ApiResponseError>) => {
+      const message = onError(error);
+      toast({
+        title: `Error`,
+        description: message,
+        variant: "destructive",
+      });
+    },
+    [toast]
   );
 
   const {
@@ -42,7 +54,6 @@ export default function useLogin() {
   >({
     mutationKey: LoginMutationConfig.mutationKey,
     mutationFn: async ({ data }: LoginMutationInputs) => {
-      console.log("Login data internal:", data);
       const loginJson = {
         email: data.email,
         password: data.password,
@@ -55,7 +66,7 @@ export default function useLogin() {
 
       return response;
     },
-    onError,
+    onError: onHookError,
     onSuccess,
   });
 

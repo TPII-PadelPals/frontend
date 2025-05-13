@@ -1,4 +1,4 @@
-import { LoginFormSchema } from "@/schemas/auth";
+import { LoginFormSchema, SignupFormSchema } from "@/schemas/auth";
 import { ApiResponse } from "@/types/api";
 import { z } from "zod";
 
@@ -22,3 +22,17 @@ export type LoginResponseBody = {
 export type LoginResponse = ApiResponse<LoginResponseBody>;
 export type LoginInputs = z.infer<typeof LoginFormSchema>;
 export type LoginMutationInputs = { data: LoginInputs };
+
+// SIGNUP
+
+export type SignupResponseBody = {
+  name: string;
+  email: string;
+  phone: string;
+  telegram_id: null | string;
+  public_id: string;
+};
+
+export type SignupResponse = ApiResponse<SignupResponseBody>;
+export type SignupInputs = z.infer<typeof SignupFormSchema>;
+export type SignupMutationInputs = { data: SignupInputs };
