@@ -1,16 +1,15 @@
-'use client'
-import { useRouter } from 'next/navigation'
+"use client";
 
-import { AuthForm } from '@/components/AuthForm'
+import { LogInForm } from "@/components/LoginForm";
+import useLogin from "@/hooks/auth/useLogin";
 
 export default function LoginPage() {
-  const router = useRouter()
+  const { mutateLogin, isPendingLogin } = useLogin();
 
-  const handleLogin = (data: { email: string; password: string }) => {
-    console.log(data)
-    // TODO: lógica de login.
-    router.push('/my-businesses')
-  }
-
-  return <AuthForm type="login" onSubmit={handleLogin} />
+  return (
+    <div className="flex flex-col items-center">
+      {isPendingLogin && <div className="mb-4 text-blue-600">Cargando...</div>}
+      <LogInForm onSubmit={mutateLogin} />
+    </div>
+  );
 }

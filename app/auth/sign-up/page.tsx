@@ -1,19 +1,15 @@
-'use client'
+"use client";
 
-import { AuthForm } from '@/components/AuthForm'
-import { useToast } from '@/hooks/use-toast';
+import { SignupForm } from "@/components/SignupForm";
+import useSignup from "@/hooks/auth/useSignup";
 
 export default function SignupPage() {
-  const { toast } = useToast();
+  const { mutateSignup, isPendingSignup } = useSignup();
 
-  const handleSignup = (data: { email: string; password: string; username: string }) => {
-    console.log(data)
-    // TODO: pegarle al endpoint de registro
-    toast({
-      title: `Registro exitoso!`,
-      variant: "success",
-    })
-  }
-
-  return <AuthForm type="signup" onSubmit={handleSignup} />
+  return (
+    <div className="flex flex-col items-center">
+      {isPendingSignup && <div className="mb-4 text-blue-600">Cargando...</div>}
+      <SignupForm onSubmit={mutateSignup} />
+    </div>
+  );
 }
