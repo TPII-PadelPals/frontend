@@ -6,6 +6,7 @@ import { SignupAxiosConfig, SignupMutationConfig } from "@/config/auth";
 import { useToast } from "@/hooks/use-toast";
 import useAxios from "@/hooks/useAxios";
 import { onError } from "@/hooks/utils";
+import { hashPassword } from "@/lib/utils";
 import { ApiResponseError } from "@/types/api";
 import { SignupMutationInputs, SignupResponse } from "@/types/auth";
 
@@ -45,9 +46,15 @@ export default function useSignup() {
   >({
     mutationKey: SignupMutationConfig.mutationKey,
     mutationFn: async ({ data }: SignupMutationInputs) => {
+      const password = await hashPassword(data.password).then(
+        (hashedPassword) => {
+          return hashedPassword;
+        }
+      );
+
       const SignupJson = {
         email: data.email,
-        password: data.password,
+        password: password,
         name: data.name,
         phone: data.phone,
       };

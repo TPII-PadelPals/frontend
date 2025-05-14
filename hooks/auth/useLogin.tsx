@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { LoginAxiosConfig, LoginMutationConfig } from "@/config/auth";
 import useAxios from "@/hooks/useAxios";
 import { onError } from "@/hooks/utils";
+import { hashPassword } from "@/lib/utils";
 import { useSessionStore } from "@/store/sessionStore";
 import { ApiResponseError } from "@/types/api";
 import {
@@ -54,9 +55,15 @@ export default function useLogin() {
   >({
     mutationKey: LoginMutationConfig.mutationKey,
     mutationFn: async ({ data }: LoginMutationInputs) => {
+      const password = await hashPassword(data.password).then(
+        (hashedPassword) => {
+          return hashedPassword;
+        }
+      );
+
       const loginJson = {
         email: data.email,
-        password: data.password,
+        password: password,
       };
 
       const response: AxiosResponse<LoginResponse> = await axios.request({
