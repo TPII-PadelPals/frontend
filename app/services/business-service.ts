@@ -7,8 +7,14 @@ export type Business = {
     location: string
 }
 
-const BUSINESS_BASE_URL = `http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}`
+export type Court = {
+    court_public_id: string
+    business_public_id: string
+    name: string
+    price_per_hour: string
+}
 
+const BUSINESS_BASE_URL = `http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}`
 
 export async function getData(ownerId: string | undefined): Promise<Business[]> {
   if (!ownerId) {
@@ -26,6 +32,28 @@ export async function getData(ownerId: string | undefined): Promise<Business[]> 
     const data_json = await response.json()
     return data_json.data
   
+  } else {
+    console.log(response)
+    return []
+  }
+}
+
+export async function getCourts(owner_id: string, business_public_id: string): Promise<Court[]> {
+  const url = `${BUSINESS_BASE_URL}/api/v1/padel-courts/?user_id=${owner_id}&business_public_id=${business_public_id}`
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "x-api-key": `${process.env.BUSINESS_SERVICE_API_KEY}`,
+    },
+    cache: "no-store",
+  })
+
+  if (response.ok) {
+    const data_json = await response.json()
+    return data_json.data
+
   } else {
     console.log(response)
     return []

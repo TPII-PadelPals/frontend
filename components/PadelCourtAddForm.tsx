@@ -31,9 +31,11 @@ export function PadelCourtAddForm(
   {
     onSubmit,
     onClose,
+    businessPublicId
   }: {
-    onSubmit: (data: { name: string; price_per_hour: string }) => void;
+    onSubmit: (data: { name: string; price_per_hour: string }, businessPublicId: string) => void;
     onClose: () => void;
+    businessPublicId : string;
   }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,10 +44,14 @@ export function PadelCourtAddForm(
     },
   })
 
+  const handleFormSubmit = (data: { name: string; price_per_hour: string }) => {
+    onSubmit(data, businessPublicId);
+  };
+
   return (
     <div className="flex flex-col items-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="min-w-80 w-1/3 space-y-6">
+        <form onSubmit={form.handleSubmit(handleFormSubmit)} className="min-w-80 w-1/3 space-y-6">
           <FormField
             control={form.control}
             name="name"
