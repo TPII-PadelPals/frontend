@@ -3,7 +3,7 @@ export async function POST(req: Request) {
   
     const BUSINESS_BASE_URL = `http://${process.env.BUSINESS_SERVICE_URL}:${process.env.BUSINESS_SERVICE_PORT}/api/v1/padel-courts/` 
     
-    const response = await fetch(`${BUSINESS_BASE_URL}?owner_id=${process.env.OWNER_ID}&business_public_id=${body.businessPublicId}`, {
+    const response = await fetch(`${BUSINESS_BASE_URL}?owner_id=${process.env.NEXT_PUBLIC_OWNER_ID}&business_public_id=${body.businessPublicId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

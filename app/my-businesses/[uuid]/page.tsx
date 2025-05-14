@@ -4,8 +4,8 @@ import CourtsByBusiness from "@/components/CourtsByBusiness";
 export default async function CourtsByBusinessPage({ params }: { params: { uuid: string } }) {
   /* eslint-disable */
   let courts: Court[] = []
-  if (process.env.OWNER_ID && params.uuid){
-    courts = await getCourts(process.env.OWNER_ID, params.uuid)
+  if (process.env.NEXT_PUBLIC_OWNER_ID && params.uuid){
+    courts = await getCourts(process.env.NEXT_PUBLIC_OWNER_ID, params.uuid)
   }
   /* eslint-enable */
 
