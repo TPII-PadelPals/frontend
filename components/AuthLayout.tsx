@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const publicPaths = [
+  "/",
   "/auth/log-in",
   "/auth/sign-up",
   "/auth/forgot-password",
@@ -40,7 +41,7 @@ export default function AuthLayout({
     <>
       <nav className="w-full top-0 left-0 flex justify-between items-center header">
         <div>
-          <Link href="/">
+          <Link href={authenticated ? "/my-businesses" : "/"}>
             <h1 className="text-4xl font-extrabold">PadelPals</h1>
           </Link>
         </div>
