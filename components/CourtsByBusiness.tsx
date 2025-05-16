@@ -17,6 +17,7 @@ import { Court } from "@/app/services/business-service";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
+import { formatCurrencyARS } from "@/lib/utils";
 
 
 export default function CourtsByBusiness({ courts, businessPublicId } : { courts: Court[] , businessPublicId : string}) {
@@ -29,8 +30,8 @@ export default function CourtsByBusiness({ courts, businessPublicId } : { courts
           accessorKey: "price_per_hour",
           header: "Precio alquiler por hora",
           cell: ({ getValue }) => {
-            const value = getValue<number>();
-            return value != null ? `$ ${value.toLocaleString("es-AR", { currency: "ARS", minimumFractionDigits: 2 })}` : "-";
+            const priceRawValue = getValue() as Number;
+            return formatCurrencyARS(priceRawValue)
           },
       },
       {
