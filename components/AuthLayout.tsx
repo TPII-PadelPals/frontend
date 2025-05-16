@@ -3,6 +3,7 @@ import { useSessionStore } from "@/store/sessionStore";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Button } from "./ui/button";
 
 const publicPaths = [
   "/auth/log-in",
@@ -21,9 +22,10 @@ export default function AuthLayout({
   const router = useRouter();
   const pathname = usePathname();
   const pathIsPublic = publicPaths.includes(pathname);
+  const { onLogout } = useSessionStore();
 
   useEffect(() => {
-    if (authenticated === null) {
+    if (authenticated === null && pathname.startsWith("/auth")) {
       return;
     }
 
@@ -34,7 +36,7 @@ export default function AuthLayout({
     if (authenticated && pathIsPublic) {
       router.replace("/my-businesses");
     }
-  }, [authenticated, pathIsPublic, router]);
+  }, [authenticated, pathIsPublic, pathname, router]);
 
   return (
     <>
@@ -44,7 +46,7 @@ export default function AuthLayout({
             <h1 className="text-4xl font-extrabold">PadelPals</h1>
           </Link>
         </div>
-        {authenticated != null && !authenticated && (
+        {!authenticated ? (
           <div className="flex gap-x-5">
             <Link href="/auth/log-in" className="text-xl">
               Iniciar Sesión
@@ -53,7 +55,13 @@ export default function AuthLayout({
               Registrarse
             </Link>
           </div>
-        )}
+        ) : authenticated != null ? (
+          <div className="flex gap-x-5">
+            <Button onClick={onLogout} variant="ghost" className="text-xl">
+              Logout
+            </Button>
+          </div>
+        ) : null}
       </nav>
       {children}
     </>
