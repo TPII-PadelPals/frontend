@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { Button } from "./ui/button";
 
 const publicPaths = [
-  "/",
   "/auth/log-in",
   "/auth/sign-up",
   "/auth/forgot-password",
@@ -59,7 +58,7 @@ export default function AuthLayout({
         ) : authenticated != null ? (
           <div className="flex gap-x-5">
             <Button onClick={onLogout} variant="ghost" className="text-xl">
-              Logout
+              Salir
             </Button>
           </div>
         ) : null}
