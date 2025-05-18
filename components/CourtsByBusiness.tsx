@@ -30,7 +30,7 @@ export default function CourtsByBusiness({ courts, businessPublicId } : { courts
           accessorKey: "price_per_hour",
           header: "Precio alquiler por hora",
           cell: ({ getValue }) => {
-            const priceRawValue = getValue() as Number;
+            const priceRawValue = getValue() as number;
             return formatCurrencyARS(priceRawValue)
           },
       },

@@ -22,7 +22,7 @@ export async function hashPassword(password: string): Promise<string> {
     .join("");
 }
 
-export function formatCurrencyARS(value: string | Number): string {
+export function formatCurrencyARS(value: string | number): string {
   return new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
