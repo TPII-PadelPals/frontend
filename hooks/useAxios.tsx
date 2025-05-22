@@ -12,15 +12,25 @@ interface AxiosInstanceWithInterceptors {
 export default function useAxios(
   { needAuth = true }: { needAuth?: boolean } = { needAuth: true }
 ): AxiosInstance {
-  const { token, onLogout } = useSessionStore();
+  const { onLogout } = useSessionStore();
 
   const axiosInstance: AxiosInstanceWithInterceptors =
     useMemo((): AxiosInstanceWithInterceptors => {
       const instance: AxiosInstance = axios.create({
         baseURL: process.env.NEXT_PUBLIC_GATEWAY_URL,
-        headers: {
-          Authorization: needAuth ? "Bearer " + token : undefined,
-        },
+      });
+
+      const requestInterceptor = instance.interceptors.request.use((config) => {
+        if (needAuth) {
+          const currentToken = useSessionStore.getState().token;
+          if (config.headers) {
+            config.headers.set(
+              "Authorization",
+              currentToken ? `Bearer ${currentToken}` : undefined
+            );
+          }
+        }
+        return config;
       });
 
       const responseInterceptor: number = instance.interceptors.response.use(
@@ -30,7 +40,7 @@ export default function useAxios(
 
           // 500 error - replace message with custom message
           if (error.response?.status === 500) {
-            error.response.data.error.description =
+            error.response.data.detail =
               "Hubo un problema, por favor intente más tarde";
             return Promise.reject(error);
           }
@@ -40,6 +50,8 @@ export default function useAxios(
             console.error(
               "useAxios.responseInterceptor => Token de sesion invalido"
             );
+            error.response.data.detail =
+              "Se ha cerrado la sesión, por favor inicie sesión nuevamente";
             prevRequest.sent = true;
             onLogout();
             return Promise.reject(error);
@@ -49,8 +61,8 @@ export default function useAxios(
         }
       );
 
-      return { instance, responseInterceptor };
-    }, [needAuth, token, onLogout]);
+      return { instance, requestInterceptor, responseInterceptor };
+    }, [needAuth, onLogout]);
 
   useEffect((): (() => void) => {
     return (): void => {
