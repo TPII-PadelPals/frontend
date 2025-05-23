@@ -47,7 +47,7 @@ export function BusinessEdit({
           <div className="mb-4 text-blue-600">Cargando...</div>
         )}
         <BusinessAddForm
-        //   defaultValues={businessToEdit}
+          businessValues={businessToEdit}
           onSubmit={(data) =>
             mutateEdit({ ...data, business_public_id: businessToEdit.business_public_id })
           }
