@@ -12,6 +12,7 @@ import {
 
 import { Business } from "@/app/services/business-service";
 import { BusinessAddForm } from "@/components/BusinessAddForm";
+import { BusinessEdit } from "@/components/BusinessEdit";
 import { DataTable } from "@/components/ui/data-table";
 import { BusinessesListConfig } from "@/config/businesses";
 import useBusinessCreate from "@/hooks/businesses/useBusinessCreate";
@@ -27,6 +28,9 @@ export default function MyBusinesses() {
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
+  const [editOpen, setEditOpen] = useState(false);
+  const [businessToEdit, setBusinessToEdit] = useState<Business | null>(null);
+
   const onSuccess = () => {
     toast({
       variant: "success",
@@ -38,6 +42,12 @@ export default function MyBusinesses() {
 
   const { mutateCreate, isPendingCreate } = useBusinessCreate({ onSuccess });
   const { businessesData, businessesIsLoading } = useBusinessesList();
+
+  const handleEdit = (business: Business) => {
+    setBusinessToEdit(business);
+    setEditOpen(true);
+  };
+
 
   const table_columns: ColumnDef<Business>[] = [
     {
@@ -69,7 +79,12 @@ export default function MyBusinesses() {
             >
               Gestionar Canchas
             </Button>
-            <Button variant="outline">Editar</Button>
+            <Button
+              variant="outline"
+              onClick={() => handleEdit(business)}
+            >
+              Editar
+            </Button>
             <Button variant="destructive">Eliminar</Button>
           </div>
         );
@@ -99,6 +114,11 @@ export default function MyBusinesses() {
               />
             </DialogContent>
           </Dialog>
+          <BusinessEdit
+            open={editOpen}
+            onOpenChange={setEditOpen}
+            businessToEdit={businessToEdit}
+          />
         </div>
         <Separator></Separator>
         <div className="container mx-auto py-10">
