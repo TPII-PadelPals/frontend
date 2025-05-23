@@ -35,6 +35,6 @@ export const BusinessEditMutationConfig = {
 };
 
 export const BusinessEditAxiosConfig = (business_public_id: string) => ({
-  url: `/api/businesses/${business_public_id}`,
+  url: `/api/v1/businesses/${business_public_id}`,
   method: "PATCH",
 });
