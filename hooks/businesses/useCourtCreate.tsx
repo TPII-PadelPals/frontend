@@ -3,29 +3,31 @@ import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { useCallback } from "react";
 
 import {
-  BusinessCreateAxiosConfig,
-  BusinessCreateMutationConfig,
+  CourtCreateAxiosConfig,
+  CourtCreateMutationConfig,
 } from "@/config/businesses";
 import useAxios from "@/hooks/useAxios";
 import { onError } from "@/hooks/utils";
 import { ApiResponseError } from "@/types/api";
 import {
-  BusinessCreateMutationInputs,
-  BusinessCreateResponse,
+  CourtCreateMutationInputs,
+  CourtCreateResponse,
 } from "@/types/businesses";
 import { useToast } from "../use-toast";
 
-export default function useBusinessCreate({
+export default function useCourtCreate({
   onSuccess,
+  businessPublicId,
 }: {
   onSuccess?: () => void;
+  businessPublicId: string;
 }) {
   const axios: AxiosInstance = useAxios({ needAuth: true });
   const { toast } = useToast();
 
   const onHookSuccess = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (_: AxiosResponse<BusinessCreateResponse>) => {
+    (_: AxiosResponse<CourtCreateResponse>) => {
       if (onSuccess) {
         onSuccess();
       }
@@ -51,23 +53,22 @@ export default function useBusinessCreate({
     error: errorCreate,
     isError: isErrorCreate,
   } = useMutation<
-    AxiosResponse<BusinessCreateResponse>,
+    AxiosResponse<CourtCreateResponse>,
     AxiosError<ApiResponseError>,
-    BusinessCreateMutationInputs,
+    CourtCreateMutationInputs,
     unknown
   >({
-    mutationKey: BusinessCreateMutationConfig.mutationKey,
-    mutationFn: async ({ data }: BusinessCreateMutationInputs) => {
+    mutationKey: CourtCreateMutationConfig.mutationKey,
+    mutationFn: async ({ data }: CourtCreateMutationInputs) => {
       const CreateJson = {
         name: data.name,
-        location: data.location,
+        price_per_hour: data.price_per_hour,
       };
 
-      const response: AxiosResponse<BusinessCreateResponse> =
-        await axios.request({
-          ...BusinessCreateAxiosConfig,
-          data: CreateJson,
-        });
+      const response: AxiosResponse<CourtCreateResponse> = await axios.request({
+        ...CourtCreateAxiosConfig(businessPublicId),
+        data: CreateJson,
+      });
 
       return response;
     },

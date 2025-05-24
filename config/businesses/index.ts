@@ -1,6 +1,8 @@
 import {
   BusinessCreateResponse,
   BusinessesListResponse,
+  CourtCreateResponse,
+  CourtsListResponse,
 } from "@/types/businesses";
 import { AxiosRequestConfig } from "axios";
 
@@ -27,3 +29,37 @@ export const BusinessCreateAxiosConfig: AxiosRequestConfig<BusinessCreateRespons
     method: "POST",
     url: "/api/v1/businesses/",
   };
+
+// Courts list
+
+export const CourtsListConfig = (business_public_id: string) => {
+  return {
+    queryKey: ["courts", "list", business_public_id],
+  };
+};
+
+export const CourtsListAxiosConfig = (
+  business_public_id: string
+): AxiosRequestConfig<CourtsListResponse> => ({
+  method: "GET",
+  url: `/api/v1/padel-courts/`,
+  params: {
+    business_public_id,
+  },
+});
+
+// Courts create
+
+export const CourtCreateMutationConfig = {
+  mutationKey: ["courts", "create"],
+};
+
+export const CourtCreateAxiosConfig = (
+  business_public_id: string
+): AxiosRequestConfig<CourtCreateResponse> => ({
+  method: "POST",
+  url: "/api/v1/padel-courts/",
+  params: {
+    business_public_id,
+  },
+});
