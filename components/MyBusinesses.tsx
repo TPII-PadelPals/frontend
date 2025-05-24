@@ -85,7 +85,6 @@ export default function MyBusinesses() {
             >
               Editar
             </Button>
-            <Button variant="destructive">Eliminar</Button>
           </div>
         );
       },
