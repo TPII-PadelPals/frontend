@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { BusinessAddForm } from "@/components/BusinessAddForm";
+import { BusinessForm } from "@/components/BusinessForm";
 import { Business } from "@/app/services/business-service";
 import { BusinessesListConfig } from "@/config/businesses";
 import useBusinessEdit from "@/hooks/businesses/useBusinessEdit";
@@ -47,7 +47,7 @@ export function BusinessEdit({
         {isPendingEdit && (
           <div className="mb-4 text-blue-600">Cargando...</div>
         )}
-        <BusinessAddForm
+        <BusinessForm
           businessValues={businessToEdit}
           onSubmit={(data) =>
             mutateEdit({ ...data, business_public_id: businessToEdit.business_public_id })

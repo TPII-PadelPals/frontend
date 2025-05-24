@@ -13,7 +13,7 @@ import {
   BusinessEditMutationInputs,
   BusinessEditResponse,
 } from "@/types/businesses";
-import { useToast } from "../use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export default function useBusinessEdit({
   onSuccess,

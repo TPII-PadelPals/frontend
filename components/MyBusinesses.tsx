@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Business } from "@/app/services/business-service";
-import { BusinessAddForm } from "@/components/BusinessAddForm";
+import { BusinessForm } from "@/components/BusinessForm";
 import { BusinessEdit } from "@/components/BusinessEdit";
 import { DataTable } from "@/components/ui/data-table";
 import { BusinessesListConfig } from "@/config/businesses";
@@ -108,7 +108,7 @@ export default function MyBusinesses() {
               {isPendingCreate && (
                 <div className="mb-4 text-blue-600">Cargando...</div>
               )}
-              <BusinessAddForm
+              <BusinessForm
                 onSubmit={mutateCreate}
                 onClose={() => setOpen(false)}
               />

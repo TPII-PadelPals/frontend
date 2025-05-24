@@ -20,7 +20,7 @@ import {
 } from "@/types/businesses";
 import { useCallback, useEffect } from "react";
 
-export function BusinessAddForm({
+export function BusinessForm({
   businessValues,
   onSubmit,
   onClose,
