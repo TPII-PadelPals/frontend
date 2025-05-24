@@ -7,8 +7,9 @@ import {
 } from "@/components/ui/dialog";
 import { BusinessAddForm } from "@/components/BusinessAddForm";
 import { Business } from "@/app/services/business-service";
+import { BusinessesListConfig } from "@/config/businesses";
 import useBusinessEdit from "@/hooks/businesses/useBusinessEdit";
-// import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "@/hooks/use-toast";
 
 interface EditBusinessDialogProps {
@@ -22,7 +23,7 @@ export function BusinessEdit({
   onOpenChange,
   businessToEdit,
 }: EditBusinessDialogProps) {
-//   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   const { mutateEdit, isPendingEdit } = useBusinessEdit({
     onSuccess: () => {
@@ -30,7 +31,7 @@ export function BusinessEdit({
         variant: "success",
         description: "Establecimiento editado correctamente.",
       });
-    //   queryClient.invalidateQueries(["businesses"]);
+      queryClient.invalidateQueries(BusinessesListConfig);
       onOpenChange(false);
     },
   });
@@ -52,7 +53,6 @@ export function BusinessEdit({
             mutateEdit({ ...data, business_public_id: businessToEdit.business_public_id })
           }
           onClose={() => onOpenChange(false)}
-        //   isEditMode
         />
       </DialogContent>
     </Dialog>
