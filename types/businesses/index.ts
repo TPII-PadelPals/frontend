@@ -1,5 +1,6 @@
 import {
   BusinessCreateFormSchema,
+  CourtAvailabilityCreateFormSchema,
   CourtCreateFormSchema,
 } from "@/schemas/businesses";
 import { ApiResponse } from "@/types/api";
@@ -31,7 +32,7 @@ export type BusinessCreateResponse = ApiResponse<BusinessCreateResponseBody>;
 export type BusinessCreateInputs = z.infer<typeof BusinessCreateFormSchema>;
 export type BusinessCreateMutationInputs = { data: BusinessCreateInputs };
 
-// Courts List
+// Court
 
 export type Court = {
   business_public_id: string;
@@ -44,6 +45,8 @@ export type Court = {
   business_name: string;
   business_location: string;
 };
+
+// Courts List
 
 export type CourtsListResponseBody = {
   data: [Court];
@@ -59,3 +62,49 @@ export type CourtCreateResponseBody = Court;
 export type CourtCreateResponse = ApiResponse<CourtCreateResponseBody>;
 export type CourtCreateInputs = z.infer<typeof CourtCreateFormSchema>;
 export type CourtCreateMutationInputs = { data: CourtCreateInputs };
+
+// Court availability
+
+export type CourtAvailability = {
+  court_name: string;
+  court_public_id: string;
+  business_public_id: string;
+  date: string;
+  initial_hour: number;
+  reserve: false;
+  latitude: number;
+  longitude: number;
+};
+
+export type CourtAvailabilityCreate = {
+  court_name: string;
+  court_public_id: string;
+  business_public_id: string;
+  date: string;
+  initial_hour: number;
+  n_matches: number;
+};
+
+export type CourtsAvailabilityListResponseBody = {
+  data: [CourtAvailability];
+  count: number;
+};
+
+// Court Availability List
+
+export type CourtsAvailabilityListResponse =
+  ApiResponse<CourtsAvailabilityListResponseBody>;
+
+// Court Availability create
+
+export type CourtAvailabilityCreateResponseBody =
+  CourtsAvailabilityListResponse;
+
+export type CourtAvailabilityCreateResponse =
+  ApiResponse<CourtAvailabilityCreateResponseBody>;
+export type CourtAvailabilityCreateInputs = z.infer<
+  typeof CourtAvailabilityCreateFormSchema
+>;
+export type CourtAvailabilityCreateMutationInputs = {
+  data: CourtAvailabilityCreateInputs;
+};

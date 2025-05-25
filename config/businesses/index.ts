@@ -2,6 +2,7 @@ import {
   BusinessCreateResponse,
   BusinessesListResponse,
   CourtCreateResponse,
+  CourtsAvailabilityListResponse,
   CourtsListResponse,
 } from "@/types/businesses";
 import { AxiosRequestConfig } from "axios";
@@ -62,4 +63,59 @@ export const CourtCreateAxiosConfig = (
   params: {
     business_public_id,
   },
+});
+
+// Courts Availability list
+
+export const CourtsAvailabilityListConfig = (
+  business_public_id: string,
+  court_public_id: string,
+  date: string = ""
+) => {
+  const qk = [
+    "courts",
+    "availability",
+    "list",
+    business_public_id,
+    court_public_id,
+  ];
+  if (date !== "") qk.push(date);
+  return {
+    queryKey: qk,
+  };
+};
+
+export const CourtsAvailabilityListAxiosConfig = (
+  business_public_id: string,
+  court_public_id: string,
+  date: string
+): AxiosRequestConfig<CourtsAvailabilityListResponse> => ({
+  method: "GET",
+  url: `/api/v1/businesses/${business_public_id}/padel-courts/${court_public_id}/available-matches/`,
+  params: {
+    date,
+  },
+});
+
+// Courts Availability create
+
+export const CourtAvailabilityCreateMutationConfig = (
+  business_public_id: string,
+  court_public_id: string
+) => ({
+  mutationKey: [
+    "courts",
+    "availability",
+    "create",
+    business_public_id,
+    court_public_id,
+  ],
+});
+
+export const CourtAvailabilityCreateAxiosConfig = (
+  business_public_id: string,
+  court_public_id: string
+): AxiosRequestConfig<CourtCreateResponse> => ({
+  method: "POST",
+  url: `/api/v1/businesses/${business_public_id}/padel-courts/${court_public_id}/available-matches/`,
 });

@@ -21,45 +21,15 @@ import { Business, BusinessesListResponse, Court } from "@/types/businesses";
 import { useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { AxiosResponse } from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const table_columns: ColumnDef<Court>[] = [
-  {
-    accessorKey: "name",
-    header: "Nombre",
-  },
-  {
-    accessorKey: "price_per_hour",
-    header: "Precio alquiler por hora",
-    cell: ({ getValue }) => {
-      const priceRawValue = getValue() as number;
-      return formatCurrencyARS(priceRawValue);
-    },
-  },
-  {
-    header: "Acciones",
-    cell: ({ row }) => {
-      /* eslint-disable */
-      /* Se va a usar cuando se hagan acciones en las canchas */
-      const _court = row.original;
-      /* eslint-enable */
-
-      return (
-        <div className="flex gap-x-3.5">
-          <Button>Gestionar Matches</Button>
-          <Button variant="outline">Editar</Button>
-          <Button variant="destructive">Eliminar</Button>
-        </div>
-      );
-    },
-  },
-];
 
 export default function CourtsByBusiness({
   businessPublicId,
 }: {
   businessPublicId: string;
 }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -85,6 +55,46 @@ export default function CourtsByBusiness({
     businessPublicId,
   });
   const { courtsData, courtsIsLoading } = useCourtsList({ businessPublicId });
+
+  const table_columns: ColumnDef<Court>[] = [
+    {
+      accessorKey: "name",
+      header: "Nombre",
+    },
+    {
+      accessorKey: "price_per_hour",
+      header: "Precio alquiler por hora",
+      cell: ({ getValue }) => {
+        const priceRawValue = getValue() as number;
+        return formatCurrencyARS(priceRawValue);
+      },
+    },
+    {
+      header: "Acciones",
+      cell: ({ row }) => {
+        /* eslint-disable */
+        /* Se va a usar cuando se hagan acciones en las canchas */
+        const _court = row.original;
+        /* eslint-enable */
+
+        return (
+          <div className="flex gap-x-3.5">
+            <Button
+              onClick={() =>
+                router.push(
+                  `./${_court.business_public_id}/courts/${_court.court_public_id}?name=${_court.name}`
+                )
+              }
+            >
+              Gestionar Disponibilidad
+            </Button>
+            <Button variant="outline">Editar</Button>
+            <Button variant="destructive">Eliminar</Button>
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <div className="p-6 w-[80vw] mx-auto">

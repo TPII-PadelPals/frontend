@@ -54,6 +54,7 @@ export const useSessionStore = create<SessionStore>()(
       onLogout: (): void => {
         // Reset auth state
         set(initialValues);
+        set({ authenticated: false });
       },
     }),
     {
