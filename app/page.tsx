@@ -1,10 +1,9 @@
-// import Calendar from "@/app/Calendar";
-import Calendar from "@/app/calendar"
+import LoginPage from "@/app/auth/log-in/page"
 
 export default function Home() {
   return (
       <div>
-        <Calendar/>
+        <LoginPage/>
       </div>
   )
 }
