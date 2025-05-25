@@ -42,7 +42,7 @@ export default function AuthLayout({
     <>
       <nav className="w-full top-0 left-0 flex justify-between items-center header">
         <div>
-          <Link href={authenticated ? "/my-businesses" : "/"}>
+          <Link href={authenticated ? "/my-businesses" : "/auth/log-in"}>
             <h1 className="text-4xl font-extrabold">PadelPals</h1>
           </Link>
         </div>
