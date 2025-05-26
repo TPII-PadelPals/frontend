@@ -86,7 +86,7 @@ export default function CourtsByBusiness({
                 )
               }
             >
-              Gestionar Disponibilidad
+              Gestionar Cancha
             </Button>
             <Button variant="outline">Editar</Button>
             <Button variant="destructive">Eliminar</Button>
