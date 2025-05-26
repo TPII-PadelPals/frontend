@@ -153,10 +153,19 @@ const CourtAvailabilityPage = ({
       <div
         style={{
           display: "flex",
-          justifyContent: "right",
+          justifyContent: "space-between",
         }}
         className="my-6"
       >
+        <div className="flex justify-left">
+          <Button className="mr-2" onClick={goToPreviousWeek}>
+                <div className="font-bold">Semana Anterior</div>
+              </Button>
+              <Button onClick={goToNextWeek}>
+                <div className="font-bold">Semana Siguiente</div>
+          </Button>
+        </div>
+        
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button className="bg-green-600">
