@@ -199,6 +199,13 @@ const CourtAvailabilityPage = ({
             eventClickHandling="Disabled"
             eventDeleteHandling="Disabled"
             headerClickHandling="Disabled"
+            onBeforeHeaderRender={(args) => {
+              const date = new Date(startDate);
+              const day = String(date.getDate()).padStart(2, '0');
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const year = date.getFullYear();
+              args.header.html = `${day}/${month}/${year}`;
+            }}
           />
 
           <div
