@@ -31,6 +31,17 @@ export const BusinessCreateAxiosConfig: AxiosRequestConfig<BusinessCreateRespons
     url: "/api/v1/businesses/",
   };
 
+// Businesses edit
+
+export const BusinessEditMutationConfig = {
+  mutationKey: ["edit"],
+};
+
+export const BusinessEditAxiosConfig = (business_public_id: string) => ({
+  url: `/api/v1/businesses/${business_public_id}`,
+  method: "PATCH",
+});
+
 // Courts list
 
 export const CourtsListConfig = (business_public_id: string) => {

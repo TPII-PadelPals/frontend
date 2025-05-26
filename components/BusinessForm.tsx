@@ -18,24 +18,32 @@ import {
   BusinessCreateInputs,
   BusinessCreateMutationInputs,
 } from "@/types/businesses";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
-export function BusinessAddForm({
+export function BusinessForm({
+  businessValues,
   onSubmit,
   onClose,
 }: {
+  businessValues?: BusinessCreateInputs;
   onSubmit: (data: BusinessCreateMutationInputs) => void;
   onClose: () => void;
 }) {
   const form = useForm<BusinessCreateInputs>({
     resolver: zodResolver(BusinessCreateFormSchema),
-    defaultValues: {
+    defaultValues: businessValues ?? {
       name: "",
       location: "",
     },
   });
 
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, reset } = form;
+
+  useEffect(() => {
+  if (businessValues) {
+    reset(businessValues);
+  }
+}, [businessValues, reset]);
 
   const handleOnSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -72,6 +80,7 @@ export function BusinessAddForm({
                   <Input
                     type="text"
                     placeholder="Av Paseo Colon 850, CABA"
+                    disabled={businessValues ? true : false}
                     {...field}
                   />
                 </FormControl>
@@ -89,7 +98,7 @@ export function BusinessAddForm({
               Cancelar
             </Button>
             <Button type="submit" className="basis-3/5">
-              Crear Establecimiento
+              {businessValues ? "Editar Establecimiento" : "Crear Establecimiento"}
             </Button>
           </div>
         </form>

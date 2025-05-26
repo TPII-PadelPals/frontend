@@ -28,9 +28,21 @@ export type BusinessesListResponse = ApiResponse<BusinessesListResponseBody>;
 
 export type BusinessCreateResponseBody = Business;
 
+
 export type BusinessCreateResponse = ApiResponse<BusinessCreateResponseBody>;
 export type BusinessCreateInputs = z.infer<typeof BusinessCreateFormSchema>;
 export type BusinessCreateMutationInputs = { data: BusinessCreateInputs };
+
+// Businesses edit
+export type BusinessEditResponseBody = Business;
+
+export type BusinessEditResponse = ApiResponse<BusinessEditResponseBody>;
+export type BusinessEditInputs = z.infer<typeof BusinessCreateFormSchema>;
+
+export type BusinessEditMutationInputs = {
+  business_public_id: string;
+  data: BusinessEditInputs;
+};
 
 // Court
 
