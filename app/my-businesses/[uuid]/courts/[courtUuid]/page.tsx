@@ -217,21 +217,6 @@ const CourtAvailabilityPage = ({
             }}
           />
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "right",
-              marginBottom: "10px",
-              paddingTop: "10px",
-            }}
-          >
-            <Button className="mr-2" onClick={goToPreviousWeek}>
-              <div className="font-bold">Semana Anterior</div>
-            </Button>
-            <Button onClick={goToNextWeek}>
-              <div className="font-bold">Semana Siguiente</div>
-            </Button>
-          </div>
         </>
       )}
     </div>
