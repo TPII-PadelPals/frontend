@@ -25,7 +25,7 @@ export default function AuthLayout({
   const { onLogout } = useSessionStore();
 
   useEffect(() => {
-    if (authenticated === null && pathname.startsWith("/auth")) {
+    if (authenticated === null) {
       return;
     }
 
@@ -46,7 +46,9 @@ export default function AuthLayout({
             <h1 className="text-4xl font-extrabold">PadelPals</h1>
           </Link>
         </div>
-        {!authenticated ? (
+        {authenticated === null ? (
+          <></>
+        ) : !authenticated ? (
           <div className="flex gap-x-5">
             <Link href="/auth/log-in" className="text-xl">
               Iniciar Sesión

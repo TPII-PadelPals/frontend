@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -12,61 +11,59 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { CourtCreateFormSchema } from "@/schemas/businesses";
+import {
+  CourtCreateInputs,
+  CourtCreateMutationInputs,
+} from "@/types/businesses";
+import { useCallback } from "react";
 
-export const formSchema = z.object({
-    name: z
-        .string()
-        .min(3, "El mínimo de caracteres es 3.")
-        .max(100, "El máximo de caracteres para el nombre es 100."),
-    price_per_hour: z
-        .string({required_error: "El campo es requerido."})
-        .regex(/^\d+$/, "El precio debe ser un número mayor a 0")
-  });
-  
-export type PadelCourtFormValues = z.infer<typeof formSchema>;
-
-export function PadelCourtAddForm(
-  {
-    onSubmit,
-    onClose,
-    businessPublicId
-  }: {
-    onSubmit: (data: { name: string; price_per_hour: string }, businessPublicId: string) => void;
-    onClose: () => void;
-    businessPublicId : string;
-  }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+export function PadelCourtAddForm({
+  onSubmit,
+  onClose,
+}: {
+  onSubmit: (data: CourtCreateMutationInputs) => void;
+  onClose: () => void;
+}) {
+  const form = useForm<CourtCreateInputs>({
+    resolver: zodResolver(CourtCreateFormSchema),
     defaultValues: {
       name: "",
+      price_per_hour: "",
     },
-  })
+  });
 
-  const handleFormSubmit = (data: { name: string; price_per_hour: string }) => {
-    onSubmit(data, businessPublicId);
-  };
+  const { control, handleSubmit } = form;
+
+  const handleOnSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      await handleSubmit((data: CourtCreateInputs) => onSubmit({ data }))();
+    },
+    [handleSubmit, onSubmit]
+  );
 
   return (
     <div className="flex flex-col items-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)} className="min-w-80 w-1/3 space-y-6">
+        <form onSubmit={handleOnSubmit} className="min-w-80 w-1/3 space-y-6">
           <FormField
-            control={form.control}
+            control={control}
             name="name"
             render={({ field }) => (
-            <FormItem>
+              <FormItem>
                 <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                <Input type="text" placeholder="Nombre" {...field} />
+                  <Input type="text" placeholder="Nombre" {...field} />
                 </FormControl>
                 <FormMessage />
-            </FormItem>
+              </FormItem>
             )}
           />
           <FormField
-            control={form.control}
+            control={control}
             name="price_per_hour"
             render={({ field }) => (
               <FormItem>
@@ -79,11 +76,20 @@ export function PadelCourtAddForm(
             )}
           />
           <div className="flex gap-2">
-            <Button type="button" variant="destructive" className="basis-2/5" onClick={onClose}>Cancelar</Button>
-            <Button type="submit" className="basis-3/5">Crear Cancha</Button>
+            <Button
+              type="button"
+              variant="destructive"
+              className="basis-2/5"
+              onClick={onClose}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" className="basis-3/5">
+              Crear Cancha
+            </Button>
           </div>
         </form>
       </Form>
     </div>
-  )
+  );
 }

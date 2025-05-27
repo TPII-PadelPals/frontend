@@ -67,13 +67,6 @@ export default function MyBusinesses() {
           <div className="flex gap-x-3.5">
             <Button
               onClick={() => {
-                localStorage.setItem(
-                  "business_temp",
-                  JSON.stringify({
-                    name: business.name,
-                    location: business.location,
-                  })
-                );
                 router.push(`/my-businesses/${business.business_public_id}`);
               }}
             >
