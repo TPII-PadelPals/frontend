@@ -12,8 +12,10 @@ import {
 import { CourtsAvailabilityListConfig } from "@/config/businesses";
 import useCourtAvailabilityCreate from "@/hooks/businesses/useCourtAvailabilityCreate";
 import useCourtsAvailabilityList from "@/hooks/businesses/useCourtAvailabilityList";
+import useMatchesList from "@/hooks/matches/useMatchesList";
 import { useToast } from "@/hooks/use-toast";
 import { CourtAvailability } from "@/types/businesses";
+import { Match } from "@/types/matches";
 import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Loader2, Plus } from "lucide-react";
@@ -77,6 +79,7 @@ const CourtAvailabilityPage = ({
     court_public_id: params.courtUuid,
     court_name: courtName as string,
   });
+
   const { courtsAvailabilityData, courtsAvailabilityIsLoading } =
     useCourtsAvailabilityList({
       business_public_id: params.uuid,
@@ -84,6 +87,22 @@ const CourtAvailabilityPage = ({
       dates: thisWeeekDays(new Date(startDate)),
       court_name: courtName as string,
     });
+
+  const { matchesData, matchesIsLoading } =
+    useMatchesList({
+      court_public_id: params.courtUuid,
+      dates: thisWeeekDays(new Date(startDate)),
+    });
+
+  const parsedMatches = matchesData?.data?.map(
+    (item: Match) => {
+      const time = Number(item.time)
+      const startDateString = `${item.date}`
+
+      console.log("Match tiempo: ", time)
+      console.log("Match dia: ", startDateString)
+    }
+  );
 
   const parsedData = courtsAvailabilityData?.data?.map(
     (item: CourtAvailability) => {
@@ -114,13 +133,15 @@ const CourtAvailabilityPage = ({
         "0"
       );
 
-      return {
+      const parsedEvent = {
         start: formatToLocalISOString(startDateObject), // Local time string for DayPilot
         end: formatToLocalISOString(endDateObject), // Local time string for DayPilot
         backColor: item.reserve ? "#DC143C" : "#32CD32",
         id: item.court_public_id + item.date + item.initial_hour,
         text: `${displayHour}:${displayMinutes}`, // Display local time
       };
+
+      return parsedEvent
     }
   );
 
@@ -189,7 +210,7 @@ const CourtAvailabilityPage = ({
           </DialogContent>
         </Dialog>
       </div>
-      {courtsAvailabilityIsLoading ? (
+      {(courtsAvailabilityIsLoading || matchesIsLoading) ? (
         <div className="flex justify-center items-center h-96">
           <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
         </div>
