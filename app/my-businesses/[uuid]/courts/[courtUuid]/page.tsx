@@ -15,12 +15,16 @@ import useCourtsAvailabilityList from "@/hooks/businesses/useCourtAvailabilityLi
 import useMatchesList from "@/hooks/matches/useMatchesList";
 import { useToast } from "@/hooks/use-toast";
 import { CourtAvailability } from "@/types/businesses";
-import { Match } from "@/types/matches";
 import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Loader2, Plus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
+
+const AVAILABLE_COLOR = "#32CD32"
+const PROVISIONAL_COLOR = "#FACC15"
+const RESERVED_COLOR = "#EF4444"
+const BLACK_COLOR = "#000000"
 
 const thisWeeekDays = (inputDate: Date) => {
   const days = [];
@@ -94,18 +98,27 @@ const CourtAvailabilityPage = ({
       dates: thisWeeekDays(new Date(startDate)),
     });
 
-  const parsedMatches = matchesData?.data?.map(
-    (item: Match) => {
-      const time = Number(item.time)
-      const startDateString = `${item.date}`
-
-      console.log("Match tiempo: ", time)
-      console.log("Match dia: ", startDateString)
-    }
-  );
-
   const parsedData = courtsAvailabilityData?.data?.map(
     (item: CourtAvailability) => {
+      const match = matchesData?.data.find(
+      (m) =>
+        m.date === item.date &&
+        m.time === item.initial_hour
+      );
+
+      let backColor = AVAILABLE_COLOR;
+      let status = "Disponible";
+
+      if (match) {
+        if (match.status === "Reserved") {
+          backColor = RESERVED_COLOR; // Rojo
+          status = "Ocupado";
+        } else if (match.status === "Provisional") {
+          backColor = PROVISIONAL_COLOR; // Amarillo
+          status = "Provisional";
+        }
+      }
+
       const initialHour = Number(item.initial_hour);
       const startDateString = `${item.date}T${String(initialHour).padStart(
         2,
@@ -133,15 +146,16 @@ const CourtAvailabilityPage = ({
         "0"
       );
 
-      const parsedEvent = {
-        start: formatToLocalISOString(startDateObject), // Local time string for DayPilot
-        end: formatToLocalISOString(endDateObject), // Local time string for DayPilot
-        backColor: item.reserve ? "#DC143C" : "#32CD32",
-        id: item.court_public_id + item.date + item.initial_hour,
-        text: `${displayHour}:${displayMinutes}`, // Display local time
-      };
+      let text = `${displayHour}:${displayMinutes} - ${status}`;
 
-      return parsedEvent
+      return {
+        start: formatToLocalISOString(startDateObject),
+        end: formatToLocalISOString(endDateObject),
+        backColor,
+        id: item.court_public_id + item.date + item.initial_hour,
+        text,
+        html: `<div style="color: ${BLACK_COLOR};">${text}</div>`,
+      };
     }
   );
 
