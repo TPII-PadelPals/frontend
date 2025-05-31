@@ -88,8 +88,6 @@ export default function CourtsByBusiness({
             >
               Gestionar Cancha
             </Button>
-            <Button variant="outline">Editar</Button>
-            <Button variant="destructive">Eliminar</Button>
           </div>
         );
       },
