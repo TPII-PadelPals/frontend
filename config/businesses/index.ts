@@ -81,18 +81,17 @@ export const CourtCreateAxiosConfig = (
 export const CourtsAvailabilityListConfig = (
   business_public_id: string,
   court_public_id: string,
-  date: string = ""
+  dates: string[] = []
 ) => {
-  const qk = [
-    "courts",
-    "availability",
-    "list",
-    business_public_id,
-    court_public_id,
-  ];
-  if (date !== "") qk.push(date);
   return {
-    queryKey: qk,
+    queryKey: [
+      "courts",
+      "availability",
+      "list",
+      business_public_id,
+      court_public_id,
+      ...dates,
+    ],
   };
 };
 

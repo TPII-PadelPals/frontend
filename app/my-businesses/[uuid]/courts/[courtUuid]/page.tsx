@@ -48,8 +48,14 @@ const CourtAvailabilityPage = ({
 
   const [open, setOpen] = useState(false);
   const calendarRef = useRef<DayPilot.Calendar>();
+  const today = new Date();
+  const firstDayOfWeek = new Date(today);
+
+  // Equal first day of day pilot calendar
+  firstDayOfWeek.setDate(today.getDate() - today.getDay());
+  
   const [startDate, setStartDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+    firstDayOfWeek.toISOString().split("T")[0]
   );
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -184,10 +190,10 @@ const CourtAvailabilityPage = ({
       >
         <div className="flex justify-left">
           <Button className="mr-2" onClick={goToPreviousWeek}>
-                <div className="font-bold">Semana Anterior</div>
-              </Button>
-              <Button onClick={goToNextWeek}>
-                <div className="font-bold">Semana Siguiente</div>
+            <div className="font-bold">Semana Anterior</div>
+          </Button>
+          <Button onClick={goToNextWeek}>
+            <div className="font-bold">Semana Siguiente</div>
           </Button>
         </div>
         
