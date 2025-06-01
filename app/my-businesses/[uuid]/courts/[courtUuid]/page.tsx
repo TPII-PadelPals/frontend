@@ -2,6 +2,7 @@
 
 import { PAdelCourtAvailabilityAddForm } from "@/components/PadelCourtAddAvailabilityForm";
 import { Button } from "@/components/ui/button";
+import { DateTime } from "luxon";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +28,9 @@ const PROVISIONAL_COLOR = "#FACC15"
 const RESERVED_COLOR = "#EF4444"
 const BLACK_COLOR = "#000000"
 
+const UTC_ZONE = "America/Argentina/Buenos_Aires"
+const DAYS_OF_WEEK = 7
+
 const thisWeeekDays = (inputDate: Date) => {
   const days = [];
   const dayCursor = new Date(inputDate);
@@ -48,14 +52,14 @@ const CourtAvailabilityPage = ({
 
   const [open, setOpen] = useState(false);
   const calendarRef = useRef<DayPilot.Calendar>();
-  const today = new Date();
-  const firstDayOfWeek = new Date(today);
+
+  const today = DateTime.now().setZone(UTC_ZONE).startOf("day");
 
   // Equal first day of day pilot calendar
-  firstDayOfWeek.setDate(today.getDate() - today.getDay());
+  const firstDayOfWeek = today.minus({ days: today.weekday % DAYS_OF_WEEK });
   
   const [startDate, setStartDate] = useState<string>(
-    firstDayOfWeek.toISOString().split("T")[0]
+    firstDayOfWeek.toString().split("T")[0]
   );
   const router = useRouter();
   const queryClient = useQueryClient();

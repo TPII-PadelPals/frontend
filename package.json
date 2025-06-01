@@ -22,6 +22,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.484.0",
+    "luxon": "^3.6.1",
     "next": "14.2.26",
     "react": "^18",
     "react-dom": "^18",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.51.1",
+    "@types/luxon": "^3.6.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
