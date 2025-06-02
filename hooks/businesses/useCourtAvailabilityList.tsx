@@ -41,7 +41,7 @@ const useCourtsAvailabilityList = ({
     queryKey: CourtsAvailabilityListConfig(
       business_public_id,
       court_public_id,
-      dates.join(",")
+      dates
     ).queryKey,
     queryFn: async () => {
       const responses = await Promise.all(dates.map(requestPerDate));

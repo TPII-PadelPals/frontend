@@ -2,6 +2,7 @@
 
 import { PAdelCourtAvailabilityAddForm } from "@/components/PadelCourtAddAvailabilityForm";
 import { Button } from "@/components/ui/button";
+import { DateTime } from "luxon";
 import {
   Dialog,
   DialogContent,
@@ -12,13 +13,23 @@ import {
 import { CourtsAvailabilityListConfig } from "@/config/businesses";
 import useCourtAvailabilityCreate from "@/hooks/businesses/useCourtAvailabilityCreate";
 import useCourtsAvailabilityList from "@/hooks/businesses/useCourtAvailabilityList";
+import useMatchesList from "@/hooks/matches/useMatchesList";
 import { useToast } from "@/hooks/use-toast";
+import { formatToLocalISOString } from "@/lib/calendar/utils";
 import { CourtAvailability } from "@/types/businesses";
 import { DayPilot, DayPilotCalendar } from "@daypilot/daypilot-lite-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Loader2, Plus } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef, useState } from "react";
+
+const AVAILABLE_COLOR = "#32CD32"
+const PROVISIONAL_COLOR = "#FACC15"
+const RESERVED_COLOR = "#EF4444"
+const BLACK_COLOR = "#000000"
+
+const UTC_ZONE = "America/Argentina/Buenos_Aires"
+const DAYS_OF_WEEK = 7
 
 const thisWeeekDays = (inputDate: Date) => {
   const days = [];
@@ -41,8 +52,14 @@ const CourtAvailabilityPage = ({
 
   const [open, setOpen] = useState(false);
   const calendarRef = useRef<DayPilot.Calendar>();
+
+  const today = DateTime.now().setZone(UTC_ZONE).startOf("day");
+
+  // Equal first day of day pilot calendar
+  const firstDayOfWeek = today.minus({ days: today.weekday % DAYS_OF_WEEK });
+  
   const [startDate, setStartDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
+    firstDayOfWeek.toString().split("T")[0]
   );
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -77,6 +94,7 @@ const CourtAvailabilityPage = ({
     court_public_id: params.courtUuid,
     court_name: courtName as string,
   });
+
   const { courtsAvailabilityData, courtsAvailabilityIsLoading } =
     useCourtsAvailabilityList({
       business_public_id: params.uuid,
@@ -85,8 +103,33 @@ const CourtAvailabilityPage = ({
       court_name: courtName as string,
     });
 
+  const { matchesData, matchesIsLoading } =
+    useMatchesList({
+      court_public_id: params.courtUuid,
+      dates: thisWeeekDays(new Date(startDate)),
+    });
+
   const parsedData = courtsAvailabilityData?.data?.map(
     (item: CourtAvailability) => {
+      const match = matchesData?.data.find(
+      (m) =>
+        m.date === item.date &&
+        m.time === item.initial_hour
+      );
+
+      let backColor = AVAILABLE_COLOR;
+      let displayStatus = "Disponible";
+
+      if (match) {
+        if (match.status === "Reserved") {
+          backColor = RESERVED_COLOR; // Rojo
+          displayStatus = "Ocupado";
+        } else if (match.status === "Provisional") {
+          backColor = PROVISIONAL_COLOR; // Amarillo
+          displayStatus = "Provisional";
+        }
+      }
+
       const initialHour = Number(item.initial_hour);
       const startDateString = `${item.date}T${String(initialHour).padStart(
         2,
@@ -97,29 +140,21 @@ const CourtAvailabilityPage = ({
       const endDateObject = new Date(startDateObject);
       endDateObject.setHours(startDateObject.getHours() + 1);
 
-      // Helper to format Date object to 'yyyy-MM-ddTHH:mm:ss' local time string
-      const formatToLocalISOString = (date: Date) => {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
-        const seconds = String(date.getSeconds()).padStart(2, "0");
-        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-      };
-
       const displayHour = String(startDateObject.getHours()).padStart(2, "0");
       const displayMinutes = String(startDateObject.getMinutes()).padStart(
         2,
         "0"
       );
 
+      const text = `${displayHour}:${displayMinutes} - ${displayStatus}`;
+
       return {
-        start: formatToLocalISOString(startDateObject), // Local time string for DayPilot
-        end: formatToLocalISOString(endDateObject), // Local time string for DayPilot
-        backColor: item.reserve ? "#DC143C" : "#32CD32",
+        start: formatToLocalISOString(startDateObject),
+        end: formatToLocalISOString(endDateObject),
+        backColor,
         id: item.court_public_id + item.date + item.initial_hour,
-        text: `${displayHour}:${displayMinutes}`, // Display local time
+        text,
+        html: `<div style="color: ${BLACK_COLOR};">${text}</div>`,
       };
     }
   );
@@ -159,10 +194,10 @@ const CourtAvailabilityPage = ({
       >
         <div className="flex justify-left">
           <Button className="mr-2" onClick={goToPreviousWeek}>
-                <div className="font-bold">Semana Anterior</div>
-              </Button>
-              <Button onClick={goToNextWeek}>
-                <div className="font-bold">Semana Siguiente</div>
+            <div className="font-bold">Semana Anterior</div>
+          </Button>
+          <Button onClick={goToNextWeek}>
+            <div className="font-bold">Semana Siguiente</div>
           </Button>
         </div>
         
@@ -189,7 +224,7 @@ const CourtAvailabilityPage = ({
           </DialogContent>
         </Dialog>
       </div>
-      {courtsAvailabilityIsLoading ? (
+      {(courtsAvailabilityIsLoading || matchesIsLoading) ? (
         <div className="flex justify-center items-center h-96">
           <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
         </div>

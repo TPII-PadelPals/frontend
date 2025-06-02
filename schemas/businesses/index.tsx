@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const REQUIRED_FIELD: string = "Este campo es requerido";
+const MAX_N_MATCHES = 24
 
 export const BusinessCreateFormSchema = z.object({
   name: z
@@ -38,16 +39,24 @@ export const CourtAvailabilityCreateFormSchema = z
     n_matches: z
       .number({ required_error: REQUIRED_FIELD, invalid_type_error: REQUIRED_FIELD})
       .min(1, "El número de partidos debe ser mayor a 0")
-      .max(10, "El número de partidos debe ser menor a 10"),
   })
-  .refine(
-    (data) => {
-      const dateFrom = new Date(data.date_from);
-      const dateTo = new Date(data.date_to);
-      return dateTo >= dateFrom;
-    },
-    {
-      message: "La fecha 'hasta' debe ser posterior a la fecha 'desde'",
-      path: ["date_to"],
+  .superRefine((data, ctx) => {
+    const dateFrom = new Date(data.date_from);
+    const dateTo = new Date(data.date_to);
+    if (dateTo < dateFrom) {
+      ctx.addIssue({
+        path: ["date_to"],
+        message: "La fecha 'Hasta' debe ser posterior a la fecha 'Desde'.",
+        code: z.ZodIssueCode.custom,
+      });
     }
-  );
+
+    const maxMatches = MAX_N_MATCHES - data.initial_hour;
+    if (data.n_matches > maxMatches) {
+      ctx.addIssue({
+        path: ["n_matches"],
+        message: `Desde las ${data.initial_hour}:00 hs solo hay disponibles ${maxMatches} hora(s) para partidos.`,
+        code: z.ZodIssueCode.custom,
+      });
+    }
+  });
