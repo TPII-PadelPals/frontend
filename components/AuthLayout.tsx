@@ -37,11 +37,11 @@ export default function AuthLayout({
     }
   }, [authenticated, pathIsPublic, pathname, router]);
 
-  if (authenticated === null) {
+  if (authenticated === null || (!authenticated && !pathIsPublic)) {
     return null;
   }
 
-  if (pathIsPublic) {
+  if (pathIsPublic && !authenticated) {
     return (
       <div className="min-h-screen flex">
         {/* Lado izquierdo - Imagen/Branding */}
@@ -63,25 +63,28 @@ export default function AuthLayout({
     );
   }
 
-  // Para páginas autenticadas, mostrar el layout original con navegación
-  return (
-    <>
-      <nav className="w-full top-0 left-0 flex justify-between items-center header">
-        <div>
-          <h1 className="text-4xl font-extrabold">Padel Pals</h1>
-        </div>
-        {authenticated && (
-          <div className="flex gap-x-5">
-            <button
-              onClick={() => useSessionStore.getState().onLogout()}
-              className="text-xl hover:text-gray-600 transition-colors"
-            >
-              Salir
-            </button>
+  if (pathIsPublic === false && authenticated) {
+    return (
+      <>
+        <nav className="w-full top-0 left-0 flex justify-between items-center header">
+          <div>
+            <h1 className="text-4xl font-extrabold">Padel Pals</h1>
           </div>
-        )}
-      </nav>
-      {children}
-    </>
-  );
+          {authenticated && (
+            <div className="flex gap-x-5">
+              <button
+                onClick={() => useSessionStore.getState().onLogout()}
+                className="text-xl hover:text-gray-600 transition-colors"
+              >
+                Salir
+              </button>
+            </div>
+          )}
+        </nav>
+        {children}
+      </>
+    );
+  }
+
+  return null;
 }
