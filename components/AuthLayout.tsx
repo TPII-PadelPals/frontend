@@ -1,8 +1,8 @@
 "use client";
 import { useSessionStore } from "@/store/sessionStore";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Image from "next/image";
 
 const publicPaths = [
   "/auth/log-in",
@@ -10,6 +10,7 @@ const publicPaths = [
   "/auth/forgot-password",
   "/auth/reset-password",
   "/auth/verify-email",
+  "/",
 ];
 
 export default function AuthLayout({
@@ -45,7 +46,6 @@ export default function AuthLayout({
       <div className="min-h-screen flex">
         {/* Lado izquierdo - Imagen/Branding */}
         <div className="hidden lg:flex lg:w-1/2 relative">
-
           <Image
             src="/image.png"
             width={500}
@@ -57,9 +57,7 @@ export default function AuthLayout({
 
         {/* Lado derecho - Formulario */}
         <div className="flex-1 flex items-center justify-center px-6 py-12 lg:px-8 bg-slate-50">
-          <div className="w-full max-w-md">
-            {children}
-          </div>
+          <div className="w-full max-w-md">{children}</div>
         </div>
       </div>
     );
@@ -74,8 +72,8 @@ export default function AuthLayout({
         </div>
         {authenticated && (
           <div className="flex gap-x-5">
-            <button 
-              onClick={() => useSessionStore.getState().onLogout()} 
+            <button
+              onClick={() => useSessionStore.getState().onLogout()}
               className="text-xl hover:text-gray-600 transition-colors"
             >
               Salir

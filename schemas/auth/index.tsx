@@ -17,7 +17,7 @@ export const LoginFormSchema = z.object({
   password: z
     .string({ required_error: REQUIRED_FIELD })
     .min(1, REQUIRED_FIELD)
-    .max(USER_PASSWORD_LENGTH),
+    .min(USER_PASSWORD_LENGTH, "Debe contener al menos 8 caracteres"),
 });
 
 export const SignupFormSchema = z.object({
@@ -40,7 +40,6 @@ export const SignupFormSchema = z.object({
     .max(USER_PHONE_LENGTH),
 });
 
-
 // Schema de contraseña con validaciones completas
 const passwordSchema = z
   .string({ required_error: REQUIRED_FIELD })
@@ -49,7 +48,8 @@ const passwordSchema = z
   .regex(/[A-Z]/, "Debe contener al menos una letra mayúscula")
   .regex(/[0-9]/, "Debe contener al menos un número")
   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/, {
-    message: "La contraseña debe contener al menos: 8 caracteres, 1 mayúscula y 1 número"
+    message:
+      "La contraseña debe contener al menos: 8 caracteres, 1 mayúscula y 1 número",
   });
 
 // Alternativa más específica con múltiples validaciones
@@ -112,18 +112,18 @@ export const validatePasswordStrength = (password: string) => {
     uppercase: /[A-Z]/.test(password),
     lowercase: /[a-z]/.test(password),
     number: /[0-9]/.test(password),
-    special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
   };
 
   const score = Object.values(checks).filter(Boolean).length;
-  
+
   return {
     checks,
     score,
-    strength: score < 3 ? 'weak' : score < 4 ? 'medium' : 'strong',
-    isValid: checks.length && checks.uppercase && checks.number
+    strength: score < 3 ? "weak" : score < 4 ? "medium" : "strong",
+    isValid: checks.length && checks.uppercase && checks.number,
   };
 };
 
 // Exportar el schema principal
-export { passwordSchema, passwordSchemaDetailed, passwordSchemaAdvanced };
+export { passwordSchema, passwordSchemaAdvanced, passwordSchemaDetailed };
