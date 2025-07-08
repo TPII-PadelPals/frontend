@@ -117,7 +117,7 @@ export default function MyBusinesses() {
           {businessesIsLoading ? (
             <div className="mb-4 text-blue-600">Cargando...</div>
           ) : (
-            <DataTable columns={table_columns} data={businessesData?.data} />
+            <DataTable columns={table_columns} data={businessesData?.data ?? []} />
           )}
         </div>
       </div>
