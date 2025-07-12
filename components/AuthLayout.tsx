@@ -1,9 +1,9 @@
 "use client";
 import { useSessionStore } from "@/store/sessionStore";
-import Link from "next/link";
+
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Button } from "./ui/button";
 
 const publicPaths = [
   "/auth/log-in",
@@ -11,6 +11,7 @@ const publicPaths = [
   "/auth/forgot-password",
   "/auth/reset-password",
   "/auth/verify-email",
+  "/",
 ];
 
 export default function AuthLayout({
@@ -22,7 +23,6 @@ export default function AuthLayout({
   const router = useRouter();
   const pathname = usePathname();
   const pathIsPublic = publicPaths.includes(pathname);
-  const { onLogout } = useSessionStore();
 
   useEffect(() => {
     if (authenticated === null) {
@@ -38,34 +38,54 @@ export default function AuthLayout({
     }
   }, [authenticated, pathIsPublic, pathname, router]);
 
-  return (
-    <>
-      <nav className="w-full top-0 left-0 flex justify-between items-center header">
-        <div>
-          <Link href={authenticated ? "/my-businesses" : "/auth/log-in"}>
-            <h1 className="text-4xl font-extrabold">PadelPals</h1>
-          </Link>
+  if (authenticated === null || (!authenticated && !pathIsPublic)) {
+    return null;
+  }
+
+  if (pathIsPublic && !authenticated) {
+    return (
+      <div className="min-h-screen flex">
+        {/* Lado izquierdo - Imagen/Branding */}
+        <div className="hidden lg:flex lg:w-1/2 relative">
+          <Image
+            src="/image.png"
+            width={500}
+            height={500}
+            alt="Picture of the author"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
-        {authenticated === null ? (
-          <></>
-        ) : !authenticated ? (
-          <div className="flex gap-x-5">
-            <Link href="/auth/log-in" className="text-xl">
-              Iniciar Sesión
-            </Link>
-            <Link href="/auth/sign-up" className="text-xl">
-              Registrarse
-            </Link>
+
+        {/* Lado derecho - Formulario */}
+        <div className="flex-1 flex items-center justify-center px-6 py-12 lg:px-8 bg-slate-50">
+          <div className="w-full max-w-md">{children}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (pathIsPublic === false && authenticated) {
+    return (
+      <>
+        <nav className="w-full top-0 left-0 flex justify-between items-center header">
+          <div>
+            <h1 className="text-4xl font-extrabold">PadelPals</h1>
           </div>
-        ) : authenticated != null ? (
-          <div className="flex gap-x-5">
-            <Button onClick={onLogout} variant="ghost" className="text-xl">
-              Salir
-            </Button>
-          </div>
-        ) : null}
-      </nav>
-      {children}
-    </>
-  );
+          {authenticated && (
+            <div className="flex gap-x-5">
+              <button
+                onClick={() => useSessionStore.getState().onLogout()}
+                className="text-xl hover:text-gray-600 transition-colors"
+              >
+                Salir
+              </button>
+            </div>
+          )}
+        </nav>
+        {children}
+      </>
+    );
+  }
+
+  return null;
 }
