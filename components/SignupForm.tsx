@@ -3,8 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Eye, EyeOff, Mail, Lock, User, Phone, Check, X, Info } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Phone, Check, X } from "lucide-react";
 import { useState, useCallback, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -17,13 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { SignupFormSchema } from "@/schemas/auth";
 import { SignupInputs, SignupMutationInputs } from "@/types/auth";
 
@@ -34,8 +26,6 @@ export const SignupForm = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const pathname = usePathname();
-  const isSignup = pathname === "/auth/sign-up";
   
   const form = useForm<SignupInputs>({
     resolver: zodResolver(SignupFormSchema),
@@ -84,10 +74,10 @@ export const SignupForm = ({
       {/* Header */}
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-gray-900">
-          Unite a la comunidad
+          Unite a PadelPals
         </h2>
         <p className="text-sm text-gray-600">
-          Crea tu cuenta y comienza a conectar con jugadores de pádel
+          Crea tu cuenta y comienza a administrar tus canchas.
         </p>
       </div>
 

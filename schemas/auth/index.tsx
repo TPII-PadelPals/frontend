@@ -40,6 +40,7 @@ export const SignupFormSchema = z.object({
     .max(USER_PHONE_LENGTH),
 });
 
+
 // Schema de contraseña con validaciones completas
 const passwordSchema = z
   .string({ required_error: REQUIRED_FIELD })

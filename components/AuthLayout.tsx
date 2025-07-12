@@ -1,5 +1,6 @@
 "use client";
 import { useSessionStore } from "@/store/sessionStore";
+
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -68,7 +69,7 @@ export default function AuthLayout({
       <>
         <nav className="w-full top-0 left-0 flex justify-between items-center header">
           <div>
-            <h1 className="text-4xl font-extrabold">Padel Pals</h1>
+            <h1 className="text-4xl font-extrabold">PadelPals</h1>
           </div>
           {authenticated && (
             <div className="flex gap-x-5">

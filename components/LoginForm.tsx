@@ -49,10 +49,10 @@ export const LogInForm = ({
       {/* Header */}
       <div className="text-center space-y-2">
         <h2 className="text-3xl font-bold text-gray-900">
-          Bienvenido
+          Bienvenido a PadelPals
         </h2>
         <p className="text-sm text-gray-600">
-          Inicia sesión para utilizar nuestra plataforma y acceder a todas las funcionalidades
+          Inicia sesión para utilizar nuestra plataforma y acceder a todas las funcionalidades.
         </p>
       </div>
 
@@ -77,6 +77,7 @@ export const LogInForm = ({
                       {...field}
                     />
                   </div>
+
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -112,6 +113,7 @@ export const LogInForm = ({
                       )}
                     </button>
                   </div>
+
                 </FormControl>
                 <FormMessage />
               </FormItem>
